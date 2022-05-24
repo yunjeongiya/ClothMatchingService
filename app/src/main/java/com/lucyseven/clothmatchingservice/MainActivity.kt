@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportFragmentManager.beginTransaction().replace(R.id.linearLayout, HomeFragment()).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
         initLayout()
     }
 
@@ -46,23 +46,23 @@ class MainActivity : AppCompatActivity() {
             bottomNavigation.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.page_1 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.linearLayout, HomeFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_2 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.linearLayout, CommuFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction().replace(R.id.container, CommuFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_3 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.linearLayout, LinkFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction().replace(R.id.container, LinkFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_4 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.linearLayout, SettingFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction().replace(R.id.container, SettingFragment()).commitAllowingStateLoss()
                         true
                     }
                     else -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.linearLayout, HomeFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
                         false
                     }
                 }
