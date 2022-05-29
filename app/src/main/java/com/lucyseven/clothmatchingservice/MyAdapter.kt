@@ -30,7 +30,6 @@ class MyAdapter(val items: ArrayList<User>): RecyclerView.Adapter<MyAdapter.MyVi
             email.text = items[position].email
             pw.text = items[position].pw
         }
-
     }
 
     override fun getItemCount(): Int {
