@@ -1,11 +1,8 @@
 package com.lucyseven.clothmatchingservice.weather.impl
 
-import com.lucyseven.clothmatchingservice.TodayForecast
 import com.lucyseven.clothmatchingservice.weather.api.*
-import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -17,7 +14,7 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
         val temperatureDoc = temperatureDoc(loc)
         return WeatherData(
             temperature = parseTempInfo(temperatureDoc),
-            city = parseCity(temperatureDoc),
+            city = parseCity(cityDoc(loc)),
             todayForecast = parseTodayForecasts(forecastDoc(loc))
         )
     }
@@ -28,14 +25,23 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
     private fun temperatureDoc(loc: Location) =
         JSONObject(Jsoup.connect(temperatureUrl(loc)).ignoreContentType(true).get().text())
 
+    private fun cityDoc(loc: Location) =
+        JSONObject(Jsoup.connect(findCityUrl(loc)).ignoreContentType(true).get().text())
+
     private fun temperatureUrl(loc: Location)=
         "https://api.openweathermap.org/data/2.5/weather?lat=${loc.latitude}&lon=${loc.longitude}&appid=b2110b957ed8967488040544ad665408"
 
     private fun forecastUrl(loc: Location)=
         "https://api.openweathermap.org/data/2.5/forecast?lat=${loc.latitude}&lon=${loc.longitude}&appid=b2110b957ed8967488040544ad665408"
 
-    private fun parseCity(temperatureDoc: JSONObject) =
-        temperatureDoc.getString("name")
+    private fun findCityUrl(loc: Location) =
+        "http://apis.vworld.kr/coord2jibun.do?x=${loc.longitude}&y=${loc.latitude}&output=json&epsg=epsg:4326&apiKey=A3A3152A-C67F-3485-A5C0-F6E666CC952E"
+
+    private fun parseCity(content: JSONObject): String {
+        val ret = content.getString("ADDR")
+        val token = ret.split(' ')
+        return "${token[0]} ${token[1]}"
+    }
 
     private fun parseTempInfo(temperatureDoc: JSONObject) =
         temperatureDoc.getJSONObject("main").run {
