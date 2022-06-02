@@ -8,11 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import androidx.loader.app.LoaderManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.lucyseven.clothmatchingservice.databinding.FragmentCommuBinding
+import com.lucyseven.clothmatchingservice.weather.api.WeatherData
+import kotlinx.coroutines.*
+import kotlin.math.round
 
 class CommuFragment : Fragment() {
 
@@ -22,8 +27,9 @@ class CommuFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
+
         binding = FragmentCommuBinding.inflate(layoutInflater, container, false)
         //firebase setting
         getfbdb()
@@ -65,6 +71,20 @@ class CommuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val model = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
+        model.weatherDataLive.observe(viewLifecycleOwner) {
+            // 상인 it 이 mainActivity 로부터 받은 weatherData 이므로
+            // 이 박스 안에서 모든 데이털 처리를 하는게 편합니다. 여기서 weather data 관련된 내용을 처리하면 돼요!
+
+
+
+
+
+
+        }
+
+
         binding!!.apply {
             cardView2.setOnClickListener {
                 //더보기
