@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.rpc.Help
+import com.lucyseven.clothmatchingservice.cloth.api.Cloth
+import com.lucyseven.clothmatchingservice.cloth.impl.ClothDataImpl
 import com.lucyseven.clothmatchingservice.databinding.ActivityMainBinding
 import com.lucyseven.clothmatchingservice.weather.api.Location
 import com.lucyseven.clothmatchingservice.weather.api.WeatherData
@@ -30,7 +32,7 @@ import kotlinx.coroutines.*
 import java.util.jar.Manifest
 
 
-class MainActivity: AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private val db = FirebaseFirestore.getInstance()
@@ -74,7 +76,8 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment())
+            .commitAllowingStateLoss()
 
         initLocation()
 //        initWeatherData()
@@ -106,23 +109,28 @@ class MainActivity: AppCompatActivity() {
             bottomNavigation.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.page_1 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_2 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, CommuFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, CommuFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_3 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, LinkFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, LinkFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_4 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, SettingFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, SettingFragment()).commitAllowingStateLoss()
                         true
                     }
                     else -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
                         false
                     }
                 }
@@ -229,8 +237,13 @@ class MainActivity: AppCompatActivity() {
                     ).addOnSuccessListener {
                         if (it != null) {
                             val weatherData = initWeatherData(it.latitude, it.longitude)
+                            val clothList: List<Cloth> = ClothDataImpl().recommend(
+                                weatherData.temperature.minTemp,
+                                weatherData.temperature.maxTemp
+                            )
                             val model = ViewModelProvider(this).get(DataViewModel::class.java)
                             model.setWeatherData(weatherData)
+                            model.setClothData(clothList)
                         }
                     }
                 }
@@ -259,8 +272,13 @@ class MainActivity: AppCompatActivity() {
                 ).addOnSuccessListener {
                     if (it != null) {
                         val weatherData = initWeatherData(it.latitude, it.longitude)
+                        val clothList: List<Cloth> = ClothDataImpl().recommend(
+                            weatherData.temperature.minTemp,
+                            weatherData.temperature.maxTemp
+                        )
                         val model = ViewModelProvider(this).get(DataViewModel::class.java)
                         model.setWeatherData(weatherData)
+                        model.setClothData(clothList)
                     }
                 }
 //                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
