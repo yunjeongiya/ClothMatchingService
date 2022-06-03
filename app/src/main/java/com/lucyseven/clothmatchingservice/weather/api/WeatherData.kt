@@ -9,6 +9,7 @@ data class WeatherData(
     val temperature: CurrentWeather,
     val city: String = "noCity",
     val todayForecast: List<TodayForecast>,
+    val weekTemperature: WeekTemperature
 ) : Parcelable
 
 @Parcelize
@@ -26,4 +27,10 @@ data class TodayForecast(
     var temp: Int, // 온도
     var weather: String, // 날씨 : 구름인지 맑은지 -> string 말고 enum에 담기, 몇가지로 할지 회의 때 정하기
     var weatherIconUrl: String
+) : Parcelable
+
+@Parcelize
+data class WeekTemperature(
+    val minTemp: Int,
+    val maxTemp: Int,
 ) : Parcelable
