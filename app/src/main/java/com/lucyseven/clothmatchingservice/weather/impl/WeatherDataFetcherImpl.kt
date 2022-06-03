@@ -58,8 +58,8 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
 
     private fun parseWeekTemperature(content: JSONObject): WeekTemperature {
 
-        var TotalMaxAvg = 0.0
-        var TotalMinAvg = 0.0
+        var totalMaxAvg = 0.0
+        var totalMinAvg = 0.0
 
         val days = content.getJSONArray("Days")
 
@@ -68,14 +68,14 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
             val tempMax = day.getString("temp_max_c").toDouble()
             val tempMin = day.getString("temp_min_c").toDouble()
 
-            TotalMaxAvg += tempMax
-            TotalMinAvg += tempMin
+            totalMaxAvg += tempMax
+            totalMinAvg += tempMin
         }
 
-        Log.i("inniestar", "${(TotalMinAvg / 7).toInt()}")
-        Log.i("inniestar", "${(TotalMaxAvg / 7).toInt()}")
+        Log.i("inniestar", "${(totalMinAvg / 7).toInt()}")
+        Log.i("inniestar", "${(totalMaxAvg / 7).toInt()}")
 
-        return WeekTemperature((TotalMinAvg / 7).toInt(), (TotalMaxAvg / 7).toInt())
+        return WeekTemperature((totalMinAvg / 7).toInt(), (totalMaxAvg / 7).toInt())
 
     }
 
@@ -123,8 +123,8 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
 
             return CurrentWeather(
                 currentTemp,
-                todayMaxTemp,
                 todayMinTemp,
+                todayMaxTemp,
                 currentWeather,
                 currentWeatherIconUrl
             )
@@ -132,13 +132,14 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
 
     private fun parseTodayForecasts(forecastDoc: JSONObject): List<TodayForecast> {
         val forecasts = forecastDoc.getJSONArray("list")
-        return (0 until 8).map { parseTodayForecast(forecasts.getJSONObject(it)) }
+        return (2 until 10).map { parseTodayForecast(forecasts.getJSONObject(it)) }
     }
 
     private fun parseTodayForecast(content: JSONObject): TodayForecast =
         with(content) {
             val time = LocalDateTime.parse(getString("dt_txt"), dateFormat)
-            val temp = getJSONObject("main").getDouble("temp")
+
+            val temp = getJSONObject("main").getDouble("temp") - 273.15f
 
             val weatherObject = getJSONArray("weather").getJSONObject(0)
             val weather = when (weatherObject.getInt("id")) {
@@ -159,9 +160,7 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
             }
 
             val weatherIconUrl =
-                "http://openweathermap.org/img/wn/" +
-                        weatherObject.getString("icon") +
-                        "@2x.png"
+                "http://openweathermap.org/img/wn/" + weatherObject.getString("icon") + "@2x.png"
 
 
             return TodayForecast(time, temp.toInt(), weather, weatherIconUrl)

@@ -47,17 +47,21 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+//      상인
+//      --------------- 요기 안에서 구현하시면 편할겁니다 -------------------------------------------------------
         val model = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
         model.weatherDataLive.observe(viewLifecycleOwner) {
             // 상인 it 이 mainActivity 로부터 받은 weatherData 이므로
             // 이 박스 안에서 모든 데이털 처리를 하는게 편합니다. 여기서 weather data 관련된 내용을 처리하면 돼요!
-
-
-
-
-
+            val weatherData = it
 
         }
+
+        model.clothDataLive.observe(viewLifecycleOwner) {
+            // 상인 it이 현재 온도에 맞는 옷 리스트들이 들어있는 Cloth 데이터 리스트
+            val clothList = it
+        }
+//      --------------------------------------------------------------------------------------------------
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
