@@ -33,9 +33,6 @@ import java.util.jar.Manifest
 class MainActivity: AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    private val db = FirebaseFirestore.getInstance()
-    lateinit var myAdapter: MyAdapter
-    var itemList = arrayListOf<User>()
 
     // 상인 : 날씨에 대한 weatherData 정보를 가지고있다
 //    private lateinit var weatherData: WeatherData
@@ -84,21 +81,6 @@ class MainActivity: AppCompatActivity() {
     private fun initLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         getLastLocation()
-    }
-
-    private fun initData() {
-        db.collection("User")   // 작업할 컬렉션
-            .get()      // 문서 가져오기
-            .addOnSuccessListener { result ->
-                // 성공할 경우
-                itemList.clear()
-                for (document in result!!) {  // 가져온 문서들은 result에 들어감
-                    Log.i("asdfasdf", document["email"].toString())
-                    val item = User(document["email"].toString(), document["pw"].toString())
-                    itemList.add(item)
-                }
-//                myAdapter.notifyDataSetChanged()  // 리사이클러 뷰 갱신
-            }
     }
 
     private fun initLayout() {

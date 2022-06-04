@@ -1,10 +1,10 @@
 package com.lucyseven.clothmatchingservice
 
 data class WeatherFeedback(
-    val id: Int = 1,
+    val id: Int,
     var date: String,
     var loc: String,
-    var temp: Float,
+    var temp: Int,
     var cloth: String,
     var feedback: String
 ) {
