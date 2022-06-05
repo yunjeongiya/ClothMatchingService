@@ -7,5 +7,4 @@ data class WeatherFeedback(
     var temp: Int,
     var cloth: String,
     var feedback: String
-) {
-}
+)

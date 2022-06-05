@@ -1,10 +1,12 @@
 package com.lucyseven.clothmatchingservice
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     // 상인 : 날씨에 대한 weatherData 정보를 가지고있다
 //    private lateinit var weatherData: WeatherData
     private lateinit var loc: Location
+    private lateinit var pref: SharedPreferences
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var permissions = arrayOf(
@@ -76,9 +79,27 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment())
             .commitAllowingStateLoss()
 
+        initShoppingMallSetting()
         initLocation()
-//        initWeatherData()
         initLayout()
+    }
+
+    private fun initShoppingMallSetting() {
+        pref = getSharedPreferences("shoppingMall", Activity.MODE_PRIVATE)
+        val edit = pref.edit()
+
+        if (pref.getInt("init", 0) == 0) {
+            edit.putBoolean("musinsa", true)
+            edit.putBoolean("brandy", true)
+            edit.putBoolean("styleShare", true)
+            edit.putBoolean("hiver", true)
+            edit.putBoolean("twentyNineCM", true)
+            edit.putBoolean("naver", true)
+
+            edit.putInt("init", 1)
+
+            edit.apply()
+        }
     }
 
     private fun initLocation() {
