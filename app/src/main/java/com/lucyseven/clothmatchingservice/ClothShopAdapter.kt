@@ -5,10 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-<<<<<<< Updated upstream
-import androidx.core.content.ContextCompat.startActivity
-=======
->>>>>>> Stashed changes
 import androidx.recyclerview.widget.RecyclerView
 import com.lucyseven.clothmatchingservice.databinding.LinkrowrowBinding
 

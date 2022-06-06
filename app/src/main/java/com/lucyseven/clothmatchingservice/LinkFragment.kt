@@ -1,19 +1,13 @@
 package com.lucyseven.clothmatchingservice
 
-<<<<<<< Updated upstream
-=======
 import android.app.Activity
->>>>>>> Stashed changes
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-<<<<<<< Updated upstream
-=======
 import androidx.lifecycle.ViewModelProvider
->>>>>>> Stashed changes
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lucyseven.clothmatchingservice.databinding.FragmentLinkBinding
 
@@ -22,48 +16,16 @@ class LinkFragment : Fragment() {
     lateinit var adapter: ClothAdapter
     lateinit var linkActivity: MainActivity
 
-<<<<<<< Updated upstream
-    val clothing:ArrayList<String> = ArrayList()
-=======
-    private var binding: FragmentLinkBinding? = null
-    lateinit var adapter: ClothAdapter
-    lateinit var linkActivity: MainActivity
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         linkActivity = context as MainActivity
     }
->>>>>>> Stashed changes
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        linkActivity = context as MainActivity
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLinkBinding.inflate(layoutInflater, container, false)
-<<<<<<< Updated upstream
-        return binding!!.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initClothingData()
-        binding!!.apply {
-            recyclerView.layoutManager = LinearLayoutManager(linkActivity, LinearLayoutManager.VERTICAL, false)
-            adapter = ClothAdapter(clothing)
-            recyclerView.adapter = adapter
-        }
-    }
-
-    private fun initClothingData()
-    {
-        clothing.add("가디건")
-        clothing.add("셔츠")
-        clothing.add("긴바지")
-=======
         val pref =
             requireContext().getSharedPreferences("shoppingMall", Activity.MODE_PRIVATE)
 
@@ -88,6 +50,7 @@ class LinkFragment : Fragment() {
                 HighestTemp.text = "${it.weekTemperature.maxTemp}"
                 LowestTemp.text = "${it.weekTemperature.minTemp}"
             }
+
         }
 
         model.clothDataLive.observe(viewLifecycleOwner) {
@@ -98,14 +61,15 @@ class LinkFragment : Fragment() {
                 recyclerView.adapter = adapter
             }
         }
-//--------------------------------------------------------------------------------------------------
+//      --------------------------------------------------------------------------------------------------
 
+        // Inflate the layout for this fragment
+        binding = FragmentLinkBinding.inflate(layoutInflater, container, false)
         return binding!!.root
->>>>>>> Stashed changes
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         binding = null
     }
 }
