@@ -19,7 +19,7 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
         return WeatherData(
             temperature = parseTempInfo(temperatureDoc(loc)),
             city = parseCity(cityDoc(loc)),
-            todayForecast = parseTodayForecasts(forecastDoc(loc)),
+            todayForecast = parseTodayForecasts(forecastDoc(loc)) as ArrayList<TodayForecast>,
             weekTemperature = parseWeekTemperature(weekTempDoc(loc))
         )
     }

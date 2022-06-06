@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 data class WeatherData(
     val temperature: CurrentWeather, // 오늘온도
     val city: String = "noCity", // 현재 도시
-    val todayForecast: List<TodayForecast>, // 오늘 3시간 간격 예보 - 앞으로 8개 (24시간)
+    val todayForecast: ArrayList<TodayForecast>, // 오늘 3시간 간격 예보 - 앞으로 8개 (24시간)
     val weekTemperature: WeekTemperature // 일주일 최고, 최저기온
 ) : Parcelable
 
