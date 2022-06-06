@@ -46,7 +46,8 @@ import com.lucyseven.clothmatchingservice.databinding.RowBinding
     }else{
         holder.binding.apply {
             //비슷했던 날
-            date.text = "${itemList[position].date} ${itemList[position].maxTemp}℃ ~ ${itemList[position].minTemp}℃"
+            val dateMod = "${itemList[position].date.substring(0,4)}년 ${itemList[position].date.substring(4,6)}월 ${itemList[position].date.substring(6,8)}일"
+            date.text = "$dateMod ${itemList[position].maxTemp}℃ ~ ${itemList[position].minTemp}℃"
             date.visibility = View.VISIBLE
             clothes.text = itemList[position].cloth.toString()
             feedback.text = itemList[position].feedback.toString()

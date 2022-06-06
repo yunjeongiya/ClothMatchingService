@@ -65,11 +65,31 @@ class FullDiaglogFragment : DialogFragment() {
             val minTemp = it.temperature.minTemp
             val maxTemp = it.temperature.maxTemp
             val icon = it.temperature.currentWeatherIconUrl
+            var score = 1
             binding.apply {
                 dlgclosebtn.setOnClickListener {
                     requireActivity().supportFragmentManager.beginTransaction()
                         .replace(R.id.container, CommuFragment())
                         .commitAllowingStateLoss()
+                }
+                radioGroup.setOnCheckedChangeListener { radioGroup, i ->
+                    when (i) {
+                        R.id.btn1 -> {
+                            score = 1
+                        }
+                        R.id.btn2 -> {
+                            score = 2
+                        }
+                        R.id.btn3 -> {
+                            score = 3
+                        }
+                        R.id.btn4 -> {
+                            score = 4
+                        }
+                        R.id.btn5 -> {
+                            score = 5
+                        }
+                    }
                 }
                 imageButton.setOnClickListener {
                     checkedList[0] = !checkedList[0]
@@ -96,7 +116,7 @@ class FullDiaglogFragment : DialogFragment() {
                         minTemp = minTemp,
                         cloth = clothesStr,
                         feedback = feedbacktext.text.toString(),
-                        feedbackScore = 1,
+                        feedbackScore = score,
                         weatherIcon = icon
                     )
                     db.collection("WeatherFeedback")
@@ -104,7 +124,7 @@ class FullDiaglogFragment : DialogFragment() {
                         .addOnSuccessListener { documentRef ->
                             Log.d("eastsea", "ID : ${documentRef}")
 //                            onDestroyView()
-                        //화면 전환 해야함
+                            //화면 전환 해야함
                             showCommuFrag()
                         }
                         .addOnFailureListener { e -> Log.e("eastsea", "Error : ${e}") }

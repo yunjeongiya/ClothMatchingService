@@ -54,43 +54,38 @@ class CommuFragment : Fragment() {
     }
 
     private fun initLayout() {
-        binding!!.apply {
-            switchbtn.setOnCheckedChangeListener { compoundButton, isChecked ->
-                when (isChecked) {
-                    //switch button event
-                    true -> {
-                        isTodayText.text = "비슷했던 날"
-                        isSimilarDay = true
-                    }
-                    false -> {
-                        isTodayText.text = "오늘"
-                        isSimilarDay = false
-                    }
-                }
-                //adpter change
-                adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
-
-            }
-        }
 
         val model = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
         model.weatherDataLive.observe(viewLifecycleOwner) {
             //weather data init
             curTemp = it.temperature.currentTemp
-            getfbdb()
             //binding 처리
+            if (todayFeedbackList.size + similarDayFeedbackList.size == 0)
+                getfbdb()
+
             binding!!.apply {
-                comRecyclerview.layoutManager = layoutManager
-                comRecyclerview.adapter = adapter
                 dateText.text = "${dateFormat.format(today)}"
-//                loctext.text = "오늘 ${it.city}의 날씨"
-//                curTemp.text = "현재 ${it.temperature.currentTemp}도"
-//                maxTemp.text = "최고 ${it.temperature.maxTemp}도"
-//                minTemp.text = "최저 ${it.temperature.minTemp}도"
-                //weather icon
+//                weather icon
 //                Glide.with(weatherIcon).load("${it.temperature.currentWeatherIconUrl}").override(100, 100,)
 //                    .into(weatherIcon);
+                switchbtn.setOnCheckedChangeListener { compoundButton, isChecked ->
+                    when (isChecked) {
+                        //switch button event
+                        true -> {
+                            isTodayText.text = "비슷했던 날"
+                            isSimilarDay = true
+                            adapter = MyFeedbackAdapter(similarDayFeedbackList, isSimilarDay)
+                            comRecyclerview.adapter = adapter
 
+                        }
+                        false -> {
+                            isTodayText.text = "오늘"
+                            isSimilarDay = false
+                            adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
+                            comRecyclerview.adapter = adapter
+                        }
+                    }
+                }
                 fab.setOnClickListener {
                     showDialog()
                 }
@@ -104,29 +99,42 @@ class CommuFragment : Fragment() {
         val collection = db.collection("WeatherFeedback")
         //data 일단 다 넣음
         Log.i("eastsea", "curtemp : $curTemp, today : ${dateFormat2.format(today)}")
-        collection.get().addOnSuccessListener {
-            for (i in it) {
-                Log.i("eastsea", "date from fb : ${i["date"]}, ${i["curTemp"]}")
-            }
-        }
-        collection.whereGreaterThanOrEqualTo("curTemp", curTemp - 3)
-            .whereLessThanOrEqualTo("curTemp", curTemp + 3).get()
-            .addOnSuccessListener { result ->
-                for(document in result){
-                    Log.i("eastsea", document["date"].toString())
+            collection.get().addOnSuccessListener { result ->
+                for (document in result!!) {
+                    val date = document["date"]?.toString() ?: "20222022"
+                    val time = document["time"]?.toString() ?: "12:12"
+                    val loc = document["loc"]?.toString() ?: "서울특별시 강남구"
+                    val currentTemp = document["curTemp"]?.toString() ?: "99"
+                    val maxTemp = document["maxTemp"]?.toString() ?: "1"
+                    val minTemp = document["minTemp"]?.toString() ?: "1"
+                    val weatherIcon = document["weatherIcon"]?.toString() ?: ""
+                    val cloth = document["cloth"]?.toString() ?: "cloth1"
+                    val feedbackScore = document["feedbackScore"]?.toString() ?: "1"
+                    val feedback = document["feedback"]?.toString() ?: "test"
+                    val item = WeatherFeedback(
+                        date,
+                        time,
+                        loc,
+                        currentTemp.toInt(),
+                        maxTemp.toInt(),
+                        minTemp.toInt(),
+                        cloth,
+                        feedbackScore.toInt(),
+                        feedback,
+                        weatherIcon
+                    )
+                    if (date == dateFormat2.format(today)) {
+                        todayFeedbackList.add(item)
+                    }
+                    if (currentTemp.toInt() <= curTemp + 3 && currentTemp.toInt() >= curTemp - 3) {
+                        similarDayFeedbackList.add(item)
+                    }
+                    adapter.notifyDataSetChanged()
                 }
-                putResultToList(result, true)
                 Log.i("eastsea", "similiar list size : ${similarDayFeedbackList.size}")
-            }
-        collection.whereEqualTo("date", "20220606").get()
-            .addOnSuccessListener { result ->
-                for(document in result){
-                    Log.i("eastsea", document["date"].toString())
-                }
-                putResultToList(result, false)
-                Log.i("eastsea", "today list size : ${similarDayFeedbackList.size}")
-            }
+                Log.i("eastsea", "today list size : ${todayFeedbackList.size}")
 
+            }
         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
         adapter.itemClickListener = object : MyFeedbackAdapter.OnItemClickListener {
@@ -187,7 +195,7 @@ class CommuFragment : Fragment() {
         val fragmentManager = childFragmentManager
         val newFragment = FullDiaglogFragment()
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container, newFragment)
-            ?.addToBackStack(null)
+//            ?.addToBackStack(null)
             ?.commitAllowingStateLoss()
     }
 
