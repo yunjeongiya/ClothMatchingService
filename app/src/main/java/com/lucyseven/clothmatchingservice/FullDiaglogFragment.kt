@@ -16,6 +16,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.type.Date
 import com.lucyseven.clothmatchingservice.databinding.FragmentFullDiaglogBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog
@@ -23,6 +25,9 @@ import java.util.*
 class FullDiaglogFragment : DialogFragment() {
     private var _binding: FragmentFullDiaglogBinding? = null
     private val binding get() = _binding!!
+    val today = LocalDateTime.now()
+    val dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd")
+    val timeFormat = DateTimeFormatter.ofPattern("hh:mm")
     val db = Firebase.firestore
     var checkedList = arrayListOf<Boolean>(false, false, false)
 
@@ -56,6 +61,10 @@ class FullDiaglogFragment : DialogFragment() {
         val viewModel = ViewModelProvider(activity as MainActivity)[DataViewModel::class.java]
         viewModel.weatherDataLive.observe(viewLifecycleOwner) {
             val city = it.city
+            val currentTemp = it.temperature.currentTemp
+            val minTemp = it.temperature.minTemp
+            val maxTemp = it.temperature.maxTemp
+            val icon = it.temperature.currentWeatherIconUrl
             binding.apply {
                 dlgclosebtn.setOnClickListener {
                     requireActivity().supportFragmentManager.beginTransaction()
@@ -79,12 +88,16 @@ class FullDiaglogFragment : DialogFragment() {
                         }
                     }
                     val feedback = WeatherFeedback(
-                        1,
-                        "20220601",
-                        city,
-                        30,
-                        clothesStr,
-                        feedbacktext.text.toString()
+                        date = dateFormat.format(today),
+                        time = timeFormat.format(today),
+                        loc = city,
+                        curTemp = currentTemp,
+                        maxTemp = maxTemp,
+                        minTemp = minTemp,
+                        cloth = clothesStr,
+                        feedback = feedbacktext.text.toString(),
+                        feedbackScore = 1,
+                        weatherIcon = icon
                     )
                     db.collection("WeatherFeedback")
                         .add(feedback)

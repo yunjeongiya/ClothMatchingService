@@ -1,7 +1,9 @@
 package com.lucyseven.clothmatchingservice
 
+import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -11,7 +13,7 @@ import com.lucyseven.clothmatchingservice.databinding.RowBinding
 //firestore ui 사용하기 위한 adapter
 //class MyFeedbackAdapter(options: FirestoreRecyclerOptions<WeatherFeedback>) :
 //    FirestoreRecyclerAdapter<WeatherFeedback, MyFeedbackAdapter.ViewHolder>(options) {
-    class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>) :
+    class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarDay:Boolean) :
     RecyclerView.Adapter<MyFeedbackAdapter.ViewHolder>() {
     interface OnItemClickListener {
         fun OnItemClick(position: Int)
@@ -34,16 +36,23 @@ import com.lucyseven.clothmatchingservice.databinding.RowBinding
 
 //    override fun onBindViewHolder(holder: ViewHolder, position: Int, model: WeatherFeedback) {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    if (!isSimilarDay){
         holder.binding.apply {
-//            productid.text = model.pId.toString()
-//            productname.text = model.pName.toString()
-//            productquantity.text = model.pQuantity.toString()
-//            Log.i("eastsea", "cloth adapter: ${model.cloth}")
-//            clothes.text = model.cloth.toString()
-//            feedback.text = model.feedback.toString()
+            //오늘
+            date.text = "${itemList[position].time}, ${itemList[position].curTemp}℃"
             clothes.text = itemList[position].cloth.toString()
             feedback.text = itemList[position].feedback.toString()
         }
+    }else{
+        holder.binding.apply {
+            //비슷했던 날
+            date.text = "${itemList[position].date} ${itemList[position].maxTemp}℃ ~ ${itemList[position].minTemp}℃"
+            date.visibility = View.VISIBLE
+            clothes.text = itemList[position].cloth.toString()
+            feedback.text = itemList[position].feedback.toString()
+        }
+    }
+
     }
 
     override fun getItemCount(): Int {
