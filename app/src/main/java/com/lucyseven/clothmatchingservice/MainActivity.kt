@@ -1,60 +1,110 @@
 package com.lucyseven.clothmatchingservice
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.rpc.Help
+import com.lucyseven.clothmatchingservice.cloth.api.Cloth
+import com.lucyseven.clothmatchingservice.cloth.impl.ClothDataImpl
 import com.lucyseven.clothmatchingservice.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.json.JSONObject
-import org.jsoup.Jsoup
+import com.lucyseven.clothmatchingservice.weather.api.Location
+import com.lucyseven.clothmatchingservice.weather.api.WeatherData
+import com.lucyseven.clothmatchingservice.weather.impl.WeatherDataFetcherImpl
+import kotlinx.coroutines.*
+import java.util.jar.Manifest
+
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    private val db = FirebaseFirestore.getInstance()
-    lateinit var myAdapter: MyAdapter
-    var itemList = arrayListOf<User>()
 
     // 상인 : 날씨에 대한 weatherData 정보를 가지고있다
-    private var weatherData: WeatherData = WeatherData(0, 0, 0, "noCity", ArrayList())
-    // 상인 : 현재 gps구현하다 어려운 문제가 있어서 deault로 좌표를 서울 한남동인가로 찍어놨습니다 이후 gps는 수정하겠습니다
-    // 그리고 아직 달 평균기온구하는 api를 다른곳에서 찾아야할것같아서 추후에 구현후 올리겠습니다
-    val baseUrl =
-        "https://api.openweathermap.org/data/2.5/weather?lat=37.5&lon=127.5&appid=b2110b957ed8967488040544ad665408"
-    val forcasetUrl =
-        "https://api.openweathermap.org/data/2.5/forecast?lat=37.5&lon=127.5&appid=b2110b957ed8967488040544ad665408"
+//    private lateinit var weatherData: WeatherData
+    private lateinit var loc: Location
+    private lateinit var pref: SharedPreferences
+
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var permissions = arrayOf(
+        android.Manifest.permission.ACCESS_FINE_LOCATION,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    private val activityResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (checkGPSProvider()) {
+                getLastLocation()
+            }
+        }
+    private val locationPermissionRequest =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions.getOrDefault(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION, false
+                ) || permissions.getOrDefault(
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    false
+                ) -> getLastLocation()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()    //remove title bar
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment())
+            .commitAllowingStateLoss()
 
-        initWeatherData()
+        initShoppingMallSetting()
+        initLocation()
         initLayout()
     }
 
-    private fun initData() {
-        db.collection("User")   // 작업할 컬렉션
-            .get()      // 문서 가져오기
-            .addOnSuccessListener { result ->
-                // 성공할 경우
-                itemList.clear()
-                for (document in result!!) {  // 가져온 문서들은 result에 들어감
-                    Log.i("asdfasdf", document["email"].toString())
-                    val item = User(document["email"].toString(), document["pw"].toString())
-                    itemList.add(item)
-                }
-//                myAdapter.notifyDataSetChanged()  // 리사이클러 뷰 갱신
-            }
+    private fun initShoppingMallSetting() {
+        pref = getSharedPreferences("shoppingMall", Activity.MODE_PRIVATE)
+        val edit = pref.edit()
+
+        if (pref.getInt("init", 0) == 0) {
+            edit.putBoolean("musinsa", true)
+            edit.putBoolean("brandy", true)
+            edit.putBoolean("styleShare", true)
+            edit.putBoolean("hiver", true)
+            edit.putBoolean("twentyNineCM", true)
+            edit.putBoolean("naver", true)
+
+            edit.putInt("init", 1)
+
+            edit.apply()
+        }
+    }
+
+    private fun initLocation() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        getLastLocation()
     }
 
     private fun initLayout() {
@@ -62,23 +112,28 @@ class MainActivity : AppCompatActivity() {
             bottomNavigation.setOnItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.page_1 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_2 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, CommuFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, CommuFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_3 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, LinkFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, LinkFragment()).commitAllowingStateLoss()
                         true
                     }
                     R.id.page_4 -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, SettingFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, SettingFragment()).commitAllowingStateLoss()
                         true
                     }
                     else -> {
-                        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
                         false
                     }
                 }
@@ -88,43 +143,167 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 상인 weather api에서 뽑아온 데이터 초기화 함수 시작시 한번 시행되고 이후 변경 되지 않는다.
-    private fun initWeatherData() {
+    // 윤정 while 을 이용한 블러킹에서 runBlocking 을 이용해 블러킹
+    private fun initWeatherData(latitude: Double, longitude: Double): WeatherData {
+        var weatherData: WeatherData? = null
 
-        CoroutineScope(Dispatchers.Default).launch {
-            var doc = Jsoup.connect(forcasetUrl).ignoreContentType(true).get().text()
-            val jsonForecast = JSONObject(doc)
-            val list = jsonForecast.getJSONArray("list")
-            for (i in 0 until 40) {
-                val content = list.getJSONObject(i)
-                val time = content.getString("dt_txt")
-                val temp = content.getJSONObject("main").getDouble("temp")
-                val weather = content.getJSONArray("weather").getJSONObject(0).getString("main")
-                weatherData.todayForecast.add(TodayForecast(time, weather, temp.toInt()))
+        runBlocking {
+            val job = CoroutineScope(Dispatchers.IO).async {
+                WeatherDataFetcherImpl().fetch(Location(latitude, longitude))
             }
-
-            doc = Jsoup.connect(baseUrl).ignoreContentType(true).get().text()
-            val json = JSONObject(doc)
-            val weatherArray = json.getJSONArray("weather")
-            val weather = weatherArray.getJSONObject(0).getString("main")
-
-            val main = json.getJSONObject("main")
-            val curTemp = main.getDouble("temp") - 273.15f
-            val maxTemp = main.getDouble("temp_max") - 273.15f
-            val minTemp = main.getDouble("temp_min") - 273.15f
-            val city = json.getString("name")
-
-            weatherData.curTemp = curTemp.toInt()
-            weatherData.maxTemp = maxTemp.toInt()
-            weatherData.minTemp = minTemp.toInt()
-            weatherData.city = city
-
+            weatherData = job.await()
         }
 
-        var tmp: Int = 0
-        val bfTmp = weatherData!!.curTemp
-        //  동기화 될 때 까지 기다리기
-        while (bfTmp == tmp) {
-            tmp = weatherData!!.curTemp
+        return weatherData!!
+    }
+
+    private fun checkGPSProvider(): Boolean {
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        return (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+    }
+
+    private fun showGPSSetting() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("위치 서비스 비활성화")
+        builder.setMessage(
+            "앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n" +
+                    "위치 설정을 허용 하시겠습니까?"
+        )
+        builder.setPositiveButton(
+            "설정"
+        ) { _, _ ->
+            val gpsSettingIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            activityResultLauncher.launch(gpsSettingIntent)
+        }
+        builder.setNegativeButton(
+            "취소"
+        ) { dialogInterface, i ->
+            dialogInterface.dismiss()
+        }
+        builder.create().show()
+    }
+
+    private fun showPermissionRequestDlg() {
+        AlertDialog.Builder(this)
+            .setTitle("위치 서비스 제공")
+            .setMessage(
+                "앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n" +
+                        "기기의 위치를 제공하도록 허용 하시겠습니까?"
+            )
+            .setPositiveButton(
+                "설정"
+            ) { _, _ ->
+                locationPermissionRequest.launch(permissions)
+            }
+            .setNegativeButton(
+                "취소"
+            ) { dialogInterface, i ->
+                dialogInterface.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun checkFineLocationPermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun checkCoarseLocationPermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        when {
+            checkFineLocationPermission() -> {
+                if (!checkGPSProvider()) {
+                    showGPSSetting()
+                } else {
+                    fusedLocationProviderClient.getCurrentLocation(
+                        LocationRequest.PRIORITY_HIGH_ACCURACY,
+                        object : CancellationToken() {
+                            override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                                return CancellationTokenSource().token
+                            }
+
+                            override fun isCancellationRequested(): Boolean {
+                                return false
+                            }
+
+                        }
+                    ).addOnSuccessListener {
+                        if (it != null) {
+                            val weatherData = initWeatherData(it.latitude, it.longitude)
+                            val clothList: List<Cloth> = ClothDataImpl().recommend(
+                                weatherData.weekTemperature.minTemp,
+                                weatherData.weekTemperature.maxTemp
+//                                weatherData.temperature.minTemp,
+//                                weatherData.temperature.maxTemp
+                            )
+                            val model = ViewModelProvider(this).get(DataViewModel::class.java)
+                            model.setWeatherData(weatherData)
+                            model.setClothData(clothList)
+                        }
+                    }
+                }
+
+//                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+//                    if (it != null) {
+//                        loc = LatLng(it.latitude, it.longitude)
+//                    }
+//                    setCurrentLocation(loc)
+//                }
+            }
+
+            checkCoarseLocationPermission() -> {
+                fusedLocationProviderClient.getCurrentLocation(
+                    LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY,
+                    object : CancellationToken() {
+                        override fun onCanceledRequested(p0: OnTokenCanceledListener): CancellationToken {
+                            return CancellationTokenSource().token
+                        }
+
+                        override fun isCancellationRequested(): Boolean {
+                            return false
+                        }
+
+                    }
+                ).addOnSuccessListener {
+                    if (it != null) {
+                        val weatherData = initWeatherData(it.latitude, it.longitude)
+                        val clothList: List<Cloth> = ClothDataImpl().recommend(
+                            weatherData.weekTemperature.minTemp,
+                            weatherData.weekTemperature.maxTemp
+//                            weatherData.temperature.minTemp,
+//                            weatherData.temperature.maxTemp
+                        )
+                        val model = ViewModelProvider(this).get(DataViewModel::class.java)
+                        model.setWeatherData(weatherData)
+                        model.setClothData(clothList)
+                    }
+                }
+//                fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+//                    if (it != null) {
+//                        loc = LatLng(it.latitude, it.longitude)
+//                    }
+//                    setCurrentLocation(loc)
+//                }
+            }
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) -> showPermissionRequestDlg()
+
+            else -> {
+                locationPermissionRequest.launch(permissions)
+            }
         }
     }
 }

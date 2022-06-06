@@ -1,10 +1,20 @@
 package com.lucyseven.clothmatchingservice
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.lucyseven.clothmatchingservice.weather.api.WeatherData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import com.lucyseven.clothmatchingservice.MainActivity as MainActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +33,9 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -33,6 +46,23 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+//      상인
+//      --------------- 요기 안에서 구현하시면 편할겁니다 -------------------------------------------------------
+        val model = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
+        model.weatherDataLive.observe(viewLifecycleOwner) {
+            // 상인 it 이 mainActivity 로부터 받은 weatherData 이므로
+            // 이 박스 안에서 모든 데이털 처리를 하는게 편합니다. 여기서 weather data 관련된 내용을 처리하면 돼요!
+            val weatherData = it
+
+        }
+
+        model.clothDataLive.observe(viewLifecycleOwner) {
+            // 상인 it이 현재 온도에 맞는 옷 리스트들이 들어있는 Cloth 데이터 리스트
+            val clothList = it
+        }
+//      --------------------------------------------------------------------------------------------------
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
