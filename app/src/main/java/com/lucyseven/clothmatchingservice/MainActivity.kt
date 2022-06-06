@@ -241,8 +241,10 @@ class MainActivity : AppCompatActivity() {
                         if (it != null) {
                             val weatherData = initWeatherData(it.latitude, it.longitude)
                             val clothList: List<Cloth> = ClothDataImpl().recommend(
-                                weatherData.temperature.minTemp,
-                                weatherData.temperature.maxTemp
+                                weatherData.weekTemperature.minTemp,
+                                weatherData.weekTemperature.maxTemp
+//                                weatherData.temperature.minTemp,
+//                                weatherData.temperature.maxTemp
                             )
                             val model = ViewModelProvider(this).get(DataViewModel::class.java)
                             model.setWeatherData(weatherData)
@@ -276,8 +278,10 @@ class MainActivity : AppCompatActivity() {
                     if (it != null) {
                         val weatherData = initWeatherData(it.latitude, it.longitude)
                         val clothList: List<Cloth> = ClothDataImpl().recommend(
-                            weatherData.temperature.minTemp,
-                            weatherData.temperature.maxTemp
+                            weatherData.weekTemperature.minTemp,
+                            weatherData.weekTemperature.maxTemp
+//                            weatherData.temperature.minTemp,
+//                            weatherData.temperature.maxTemp
                         )
                         val model = ViewModelProvider(this).get(DataViewModel::class.java)
                         model.setWeatherData(weatherData)
