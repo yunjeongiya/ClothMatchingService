@@ -1,6 +1,7 @@
 package com.lucyseven.clothmatchingservice
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,13 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lucyseven.clothmatchingservice.cloth.api.Cloth
 import com.lucyseven.clothmatchingservice.databinding.LinkrowBinding
 
-class ClothAdapter(val clothing:List<Cloth>) : RecyclerView.Adapter<ClothAdapter.ViewHolder>()
+class ClothAdapter(val clothing:List<Cloth>, val shopBase: ArrayList<ShopInfo>) : RecyclerView.Adapter<ClothAdapter.ViewHolder>()
 {
     lateinit var adapter: ClothShopAdapter
     lateinit var context: Context
-
-    val shopList:ArrayList<String> = ArrayList()
-    val urlList:ArrayList<String> = ArrayList()
 
     inner class ViewHolder(val binding:LinkrowBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -22,8 +20,6 @@ class ClothAdapter(val clothing:List<Cloth>) : RecyclerView.Adapter<ClothAdapter
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        initShopData()
-        initUrlData()
         context = recyclerView.context
     }
 
@@ -33,26 +29,26 @@ class ClothAdapter(val clothing:List<Cloth>) : RecyclerView.Adapter<ClothAdapter
     }
 
     override fun onBindViewHolder(holder: ClothAdapter.ViewHolder, position: Int) {
-        holder.binding.clothImage.setImageResource(clothing[position].iconId)
-        holder.binding.clothText.text = clothing[position].name
-        holder.binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        adapter = ClothShopAdapter(shopList, urlList)
+        val shopList: ArrayList<String> = ArrayList()
+        val linkList: ArrayList<String> = ArrayList()
+        val imageList: ArrayList<Int> = ArrayList()
+
+        for(i in 0 until shopBase.count())
+        {
+            if(shopBase[i].pref)
+            {
+                holder.binding.clothImage.setImageResource(clothing[position].iconId)
+                holder.binding.clothText.text = clothing[position].name
+                holder.binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                imageList.add(shopBase[i].iconId)
+                shopList.add(shopBase[i].name + "에서 " + clothing[position].name + " 확인해보기 >")
+                linkList.add(shopBase[i].linkBase + clothing[position].name)
+            }
+        }
+        adapter = ClothShopAdapter(imageList, shopList, linkList)
         holder.binding.recyclerView.adapter = adapter
     }
 
-    private fun initShopData()
-    {
-        shopList.add("무신사")
-        shopList.add("지그재그")
-        shopList.add("에이블리")
-    }
-
-    private fun initUrlData()
-    {
-        urlList.add("https://www.musinsa.com/app/")
-        urlList.add("https://zigzag.kr/")
-        urlList.add("https://a-bly.com/")
-    }
 
     override fun getItemCount(): Int {
         return clothing.size
