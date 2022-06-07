@@ -8,7 +8,7 @@ class ClothDataImpl : ClothRecommender {
 
     override fun recommend(minTemp: Int, maxTemp: Int): List<Cloth> =
 
-        when ((minTemp + maxTemp) / 2) {
+        when ((maxTemp * 3 + minTemp) / 4) {
             in -70..-10 ->
                 arrayListOf(
                     Cloth(R.drawable.winter_padding, "롱패딩 / 겨울패딩"),
@@ -17,7 +17,7 @@ class ClothDataImpl : ClothRecommender {
                     Cloth(R.drawable.gloves, "장갑"),
                     Cloth(R.drawable.winter_scarf, "목도리")
                 )
-            in -9..4 ->
+            in -9..0 ->
                 arrayListOf(
                     Cloth(R.drawable.winter_padding, "롱패딩 / 겨울패딩"),
                     Cloth(R.drawable.padding, "패딩"),
@@ -27,7 +27,7 @@ class ClothDataImpl : ClothRecommender {
                     Cloth(R.drawable.gloves, "장갑"),
                     Cloth(R.drawable.winter_scarf, "목도리")
                 )
-            in 5..8 ->
+            in 0..4 ->
                 arrayListOf(
                     Cloth(R.drawable.winter_coat, "겨울코트"),
                     Cloth(R.drawable.padding, "패딩"),
@@ -36,7 +36,7 @@ class ClothDataImpl : ClothRecommender {
                     Cloth(R.drawable.sweater, "스웨터"),
                     Cloth(R.drawable.winter_pants, "겨울면바지")
                 )
-            in 9..11 ->
+            in 4..9 ->
                 arrayListOf(
                     Cloth(R.drawable.padding, "가벼운패딩"),
                     Cloth(R.drawable.leather_jacket, "가죽자켓"),
@@ -48,7 +48,7 @@ class ClothDataImpl : ClothRecommender {
                     Cloth(R.drawable.cotton_pants, "면바지"),
                     Cloth(R.drawable.jeans, "청바지")
                 )
-            in 12..15 ->
+            in 9..13 ->
                 arrayListOf(
                     Cloth(R.drawable.thin_coat, "트렌치코트"),
                     Cloth(R.drawable.thin_coat, "얇은 코트"),
@@ -60,7 +60,7 @@ class ClothDataImpl : ClothRecommender {
                     Cloth(R.drawable.jeans, "청바지")
 
                 )
-            in 15..19 ->
+            in 13..16 ->
                 arrayListOf(
                     Cloth(R.drawable.jacket, "얇은 자켓"),
                     Cloth(R.drawable.sweater, "스웨터"),
@@ -71,7 +71,7 @@ class ClothDataImpl : ClothRecommender {
                     Cloth(R.drawable.jeans, "청바지"),
                     Cloth(R.drawable.slacks, "슬랙스")
                 )
-            in 20..22 ->
+            in 16..19 ->
                 arrayListOf(
                     Cloth(R.drawable.long_sleeve, "긴팔티"),
                     Cloth(R.drawable.shirt, "와이셔츠"),
@@ -81,7 +81,7 @@ class ClothDataImpl : ClothRecommender {
                     Cloth(R.drawable.jeans, "청바지"),
                     Cloth(R.drawable.slacks, "슬랙스")
                 )
-            in 23..26 ->
+            in 20..24 ->
                 arrayListOf(
                     Cloth(R.drawable.tshirt, "반팔티"),
                     Cloth(R.drawable.long_sleeve, "얇은 긴팔티"),
