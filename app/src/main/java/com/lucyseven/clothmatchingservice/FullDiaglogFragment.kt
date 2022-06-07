@@ -27,7 +27,7 @@ class FullDiaglogFragment : DialogFragment() {
     private val binding get() = _binding!!
     val today = LocalDateTime.now()
     val dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd")
-    val timeFormat = DateTimeFormatter.ofPattern("hh:mm")
+    val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
     val db = Firebase.firestore
     var checkedList = arrayListOf<Boolean>(false, false, false)
 
@@ -101,10 +101,10 @@ class FullDiaglogFragment : DialogFragment() {
                     checkedList[2] = !checkedList[2]
                 }
                 submitbtn.setOnClickListener {
-                    var clothesStr = ""
+                    var clothesArr = ArrayList<String>()
                     for (i in 1..checkedList.size) {
                         if (checkedList[i - 1]) {
-                            clothesStr += "옷 ${i},"
+                            clothesArr.add("옷 ${i},")
                         }
                     }
                     val feedback = WeatherFeedback(
@@ -114,7 +114,7 @@ class FullDiaglogFragment : DialogFragment() {
                         curTemp = currentTemp,
                         maxTemp = maxTemp,
                         minTemp = minTemp,
-                        cloth = clothesStr,
+                        cloth = clothesArr,
                         feedback = feedbacktext.text.toString(),
                         feedbackScore = score,
                         weatherIcon = icon

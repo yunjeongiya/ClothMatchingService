@@ -108,7 +108,7 @@ class CommuFragment : Fragment() {
                     val maxTemp = document["maxTemp"]?.toString() ?: "1"
                     val minTemp = document["minTemp"]?.toString() ?: "1"
                     val weatherIcon = document["weatherIcon"]?.toString() ?: ""
-                    val cloth = document["cloth"]?.toString() ?: "cloth1"
+                    val cloth = document["cloth"] as ArrayList<String>
                     val feedbackScore = document["feedbackScore"]?.toString() ?: "1"
                     val feedback = document["feedback"]?.toString() ?: "test"
                     val item = WeatherFeedback(
@@ -162,7 +162,7 @@ class CommuFragment : Fragment() {
             val maxTemp = document["maxTemp"]?.toString() ?: "1"
             val minTemp = document["minTemp"]?.toString() ?: "1"
             val weatherIcon = document["weatherIcon"]?.toString() ?: ""
-            val cloth = document["cloth"]?.toString() ?: "cloth1"
+            val cloth = document["cloth"] as ArrayList<String>
             val feedbackScore = document["feedbackScore"]?.toString() ?: "1"
             val feedback = document["feedback"]?.toString() ?: "test"
             val item = WeatherFeedback(

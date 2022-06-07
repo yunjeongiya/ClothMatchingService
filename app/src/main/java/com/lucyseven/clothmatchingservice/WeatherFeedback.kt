@@ -7,7 +7,7 @@ data class WeatherFeedback(
     var curTemp: Int,
     var maxTemp : Int,
     var minTemp : Int,
-    var cloth: String,
+    var cloth: ArrayList<String>,
     var feedbackScore : Int,
     var feedback: String,
     var weatherIcon : String
