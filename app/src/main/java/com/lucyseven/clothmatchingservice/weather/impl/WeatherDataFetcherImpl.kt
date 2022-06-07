@@ -19,7 +19,7 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
         return WeatherData(
             temperature = parseTempInfo(temperatureDoc(loc)),
             city = parseCity(cityDoc(loc)),
-            todayForecast = parseTodayForecasts(forecastDoc(loc)),
+            todayForecast = parseTodayForecasts(forecastDoc(loc)) as ArrayList<TodayForecast>,
             weekTemperature = parseWeekTemperature(weekTempDoc(loc))
         )
     }
@@ -132,12 +132,12 @@ class WeatherDataFetcherImpl : WeatherDataFetcher {
 
     private fun parseTodayForecasts(forecastDoc: JSONObject): List<TodayForecast> {
         val forecasts = forecastDoc.getJSONArray("list")
-        return (2 until 10).map { parseTodayForecast(forecasts.getJSONObject(it)) }
+        return (0 until 8).map { parseTodayForecast(forecasts.getJSONObject(it)) }
     }
 
     private fun parseTodayForecast(content: JSONObject): TodayForecast =
         with(content) {
-            val time = LocalDateTime.parse(getString("dt_txt"), dateFormat)
+            val time = LocalDateTime.parse(getString("dt_txt"), dateFormat).plusHours(9)
 
             val temp = getJSONObject("main").getDouble("temp") - 273.15f
 

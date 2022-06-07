@@ -2,4 +2,10 @@
     <string name="app_name">ClothMatchingService</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="musinsa">무신사 (https://www.musinsa.com/app/)</string>
+    <string name="brandy">브랜디 (https://www.brandi.co.kr/)</string>
+    <string name="styleShare">스타일 쉐어 (https://www.styleshare.kr/)</string>
+    <string name="hiver">하이버 (https://www.hiver.co.kr/)</string>
+    <string name="twentyNineCM">29cm (https://www.29cm.co.kr/home/)</string>
+    <string name="naver">네이버 쇼핑 (https://shopping.naver.com/)</string>
 </resources>

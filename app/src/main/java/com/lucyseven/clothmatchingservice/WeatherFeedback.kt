@@ -13,3 +13,4 @@ data class WeatherFeedback(
     var weatherIcon : String
 ) {
 }
+

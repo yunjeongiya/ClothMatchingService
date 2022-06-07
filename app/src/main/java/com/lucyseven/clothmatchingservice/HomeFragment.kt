@@ -1,51 +1,35 @@
 package com.lucyseven.clothmatchingservice
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.lucyseven.clothmatchingservice.weather.api.WeatherData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import com.lucyseven.clothmatchingservice.MainActivity as MainActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.lucyseven.clothmatchingservice.cloth.impl.ClothDataImpl
+import com.lucyseven.clothmatchingservice.databinding.FragmentHomeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var binding: FragmentHomeBinding? = null
+    private lateinit var forecastAdapter: HomeForecastAdapter
+    private lateinit var forecastLayoutManager: RecyclerView.LayoutManager
+    private lateinit var clothListAdapter: HomeClothAdapter
+    private lateinit var clothListLayoutManager: RecyclerView.LayoutManager
 
-
-
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
 //      상인
 //      --------------- 요기 안에서 구현하시면 편할겁니다 -------------------------------------------------------
@@ -55,35 +39,56 @@ class HomeFragment : Fragment() {
             // 이 박스 안에서 모든 데이털 처리를 하는게 편합니다. 여기서 weather data 관련된 내용을 처리하면 돼요!
             val weatherData = it
 
+            Glide
+                .with(requireContext())
+                .load(weatherData.temperature.currentWeatherIconUrl)
+                .into(binding!!.todayWeatherUrl)
+
+            binding!!.currentLocation.text = weatherData.city
+
+            binding!!.currentWeather.text = weatherData.temperature.currentWeather
+
+            binding!!.currentTemp.text =
+                "${weatherData.temperature.currentTemp} ºC"
+
+            binding!!.todayMinTemp.text =
+                "최저 : ${weatherData.temperature.minTemp} ºC"
+
+            binding!!.todayMaxTemp.text =
+                "최고 : ${weatherData.temperature.maxTemp} ºC"
+
+            forecastLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            forecastAdapter = HomeForecastAdapter(weatherData.todayForecast)
+
+            binding!!.apply {
+                forecastRecyclerView.layoutManager = forecastLayoutManager
+                forecastRecyclerView.adapter = forecastAdapter
+            }
+
+            val clothList = ClothDataImpl().recommend(
+                weatherData.temperature.minTemp,
+                weatherData.temperature.maxTemp
+            )
+
+            clothListLayoutManager = GridLayoutManager(requireContext(), 4, GridLayoutManager.VERTICAL, false)
+            clothListAdapter = HomeClothAdapter(clothList)
+
+            binding!!.apply {
+                clothListRecyclerView.layoutManager = clothListLayoutManager
+                clothListRecyclerView.adapter = clothListAdapter
+            }
+
+
+
         }
 
-        model.clothDataLive.observe(viewLifecycleOwner) {
-            // 상인 it이 현재 온도에 맞는 옷 리스트들이 들어있는 Cloth 데이터 리스트
-            val clothList = it
-        }
 //      --------------------------------------------------------------------------------------------------
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return binding?.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }
