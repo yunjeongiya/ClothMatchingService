@@ -24,6 +24,8 @@
         <entry key="app/src/main/res/layout/home_cloth_row.xml" value="0.7088541666666667" />
         <entry key="app/src/main/res/layout/home_forecast.xml" value="0.28306159420289856" />
         <entry key="app/src/main/res/layout/home_forecast_row.xml" value="0.4234375" />
+        <entry key="app/src/main/res/layout/linkrow.xml" value="0.5261096605744126" />
+        <entry key="app/src/main/res/layout/linkrowrow.xml" value="0.7098958333333333" />
         <entry key="app/src/main/res/layout/row.xml" value="0.1453125" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3890625" />
       </map>
