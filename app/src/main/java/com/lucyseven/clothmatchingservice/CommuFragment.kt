@@ -65,9 +65,7 @@ class CommuFragment : Fragment() {
 
             binding!!.apply {
                 dateText.text = "${dateFormat.format(today)}"
-//                weather icon
-//                Glide.with(weatherIcon).load("${it.temperature.currentWeatherIconUrl}").override(100, 100,)
-//                    .into(weatherIcon);
+
                 switchbtn.setOnCheckedChangeListener { compoundButton, isChecked ->
                     when (isChecked) {
                         //switch button event
@@ -137,15 +135,15 @@ class CommuFragment : Fragment() {
             }
         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
-        adapter.itemClickListener = object : MyFeedbackAdapter.OnItemClickListener {
-            override fun OnItemClick(position: Int) {
-                binding.apply {
+//        adapter.itemClickListener = object : MyFeedbackAdapter.OnItemClickListener {
+//            override fun OnItemClick(position: Int) {
+//                binding.apply {
 //                    pIdEdit.setText(adapter.getItem(position).pId.toString())
 //                    pNameEdit.setText(adapter.getItem(position).pName)
 //                    pQuantityEdit.setText(adapter.getItem(position).pQuantity.toString())
-                }
-            }
-        }
+//                }
+//            }
+//        }
         binding!!.apply {
             comRecyclerview.layoutManager = layoutManager
             comRecyclerview.adapter = adapter
