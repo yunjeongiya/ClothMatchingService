@@ -16,6 +16,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.type.Date
 import com.lucyseven.clothmatchingservice.databinding.FragmentFullDiaglogBinding
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog
@@ -23,6 +25,9 @@ import java.util.*
 class FullDiaglogFragment : DialogFragment() {
     private var _binding: FragmentFullDiaglogBinding? = null
     private val binding get() = _binding!!
+    val today = LocalDateTime.now()
+    val dateFormat = DateTimeFormatter.ofPattern("yyyyMMdd")
+    val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
     val db = Firebase.firestore
     var checkedList = arrayListOf<Boolean>(false, false, false)
 
@@ -56,11 +61,35 @@ class FullDiaglogFragment : DialogFragment() {
         val viewModel = ViewModelProvider(activity as MainActivity)[DataViewModel::class.java]
         viewModel.weatherDataLive.observe(viewLifecycleOwner) {
             val city = it.city
+            val currentTemp = it.temperature.currentTemp
+            val minTemp = it.temperature.minTemp
+            val maxTemp = it.temperature.maxTemp
+            val icon = it.temperature.currentWeatherIconUrl
+            var score = 1
             binding.apply {
                 dlgclosebtn.setOnClickListener {
                     requireActivity().supportFragmentManager.beginTransaction()
                         .replace(R.id.container, CommuFragment())
                         .commitAllowingStateLoss()
+                }
+                radioGroup.setOnCheckedChangeListener { radioGroup, i ->
+                    when (i) {
+                        R.id.btn1 -> {
+                            score = 1
+                        }
+                        R.id.btn2 -> {
+                            score = 2
+                        }
+                        R.id.btn3 -> {
+                            score = 3
+                        }
+                        R.id.btn4 -> {
+                            score = 4
+                        }
+                        R.id.btn5 -> {
+                            score = 5
+                        }
+                    }
                 }
                 imageButton.setOnClickListener {
                     checkedList[0] = !checkedList[0]
@@ -72,26 +101,30 @@ class FullDiaglogFragment : DialogFragment() {
                     checkedList[2] = !checkedList[2]
                 }
                 submitbtn.setOnClickListener {
-                    var clothesStr = ""
+                    var clothesArr = ArrayList<String>()
                     for (i in 1..checkedList.size) {
                         if (checkedList[i - 1]) {
-                            clothesStr += "옷 ${i},"
+                            clothesArr.add("옷 ${i},")
                         }
                     }
                     val feedback = WeatherFeedback(
-                        1,
-                        "20220601",
-                        city,
-                        30,
-                        clothesStr,
-                        feedbacktext.text.toString()
+                        date = dateFormat.format(today),
+                        time = timeFormat.format(today),
+                        loc = city,
+                        curTemp = currentTemp,
+                        maxTemp = maxTemp,
+                        minTemp = minTemp,
+                        cloth = clothesArr,
+                        feedback = feedbacktext.text.toString(),
+                        feedbackScore = score,
+                        weatherIcon = icon
                     )
                     db.collection("WeatherFeedback")
                         .add(feedback)
                         .addOnSuccessListener { documentRef ->
                             Log.d("eastsea", "ID : ${documentRef}")
 //                            onDestroyView()
-                        //화면 전환 해야함
+                            //화면 전환 해야함
                             showCommuFrag()
                         }
                         .addOnFailureListener { e -> Log.e("eastsea", "Error : ${e}") }

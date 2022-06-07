@@ -12,21 +12,32 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.lucyseven.clothmatchingservice.databinding.FragmentCommuBinding
 import com.lucyseven.clothmatchingservice.weather.api.WeatherData
 import kotlinx.coroutines.*
+import java.text.DateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.math.round
 
 class CommuFragment : Fragment() {
 
     var binding: FragmentCommuBinding? = null
     var todayFeedbackList = arrayListOf<WeatherFeedback>()
-    var isAnswerToday = false
+    var similarDayFeedbackList = arrayListOf<WeatherFeedback>()
+    var isSimilarDay = false
+    var curTemp: Int = 0
+    val today = LocalDateTime.now()
+    val dateFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
+    val dateFormat2 = DateTimeFormatter.ofPattern("yyyyMMdd")
     lateinit var adapter: MyFeedbackAdapter
     lateinit var db: FirebaseFirestore
     lateinit var layoutManager: LinearLayoutManager
@@ -38,7 +49,6 @@ class CommuFragment : Fragment() {
 
         binding = FragmentCommuBinding.inflate(layoutInflater, container, false)
         //firebase setting
-        getfbdb()
         initLayout()
         return binding!!.root
     }
@@ -47,20 +57,36 @@ class CommuFragment : Fragment() {
 
         val model = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
         model.weatherDataLive.observe(viewLifecycleOwner) {
+            //weather data init
+            curTemp = it.temperature.currentTemp
             //binding 처리
+            if (todayFeedbackList.size + similarDayFeedbackList.size == 0)
+                getfbdb()
+
             binding!!.apply {
-                todayRecyclerView.layoutManager = layoutManager
-                todayRecyclerView.adapter = adapter
-                loctext.text = "오늘 ${it.city}의 기온"
-                maxTemp.text = "최고 ${it.temperature.maxTemp}도"
-                minTemp.text = "최저 ${it.temperature.minTemp}도"
-                cardView2.setOnClickListener {
-                    //더보기
+                dateText.text = "${dateFormat.format(today)}"
+//                weather icon
+//                Glide.with(weatherIcon).load("${it.temperature.currentWeatherIconUrl}").override(100, 100,)
+//                    .into(weatherIcon);
+                switchbtn.setOnCheckedChangeListener { compoundButton, isChecked ->
+                    when (isChecked) {
+                        //switch button event
+                        true -> {
+                            isTodayText.text = "비슷했던 날"
+                            isSimilarDay = true
+                            adapter = MyFeedbackAdapter(similarDayFeedbackList, isSimilarDay)
+                            comRecyclerview.adapter = adapter
+
+                        }
+                        false -> {
+                            isTodayText.text = "오늘"
+                            isSimilarDay = false
+                            adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
+                            comRecyclerview.adapter = adapter
+                        }
+                    }
                 }
-                cardView3.setOnClickListener {
-                    //더보기
-                }
-                showdialbtn.setOnClickListener {
+                fab.setOnClickListener {
                     showDialog()
                 }
             }
@@ -70,38 +96,47 @@ class CommuFragment : Fragment() {
 
     private fun getfbdb() {
         db = Firebase.firestore
-        db.collection("WeatherFeedback").get()
-            .addOnSuccessListener { result ->
+        val collection = db.collection("WeatherFeedback")
+        //data 일단 다 넣음
+        Log.i("eastsea", "curtemp : $curTemp, today : ${dateFormat2.format(today)}")
+            collection.get().addOnSuccessListener { result ->
                 for (document in result!!) {
-//                    Log.i("eastsea", document["id"].toString())
-//                    Log.i("eastsea", document["date"].toString())
-//                    Log.i("eastsea", document["loc"].toString())
-//                    Log.i("eastsea", document["temp"].toString())
-//                    Log.i("eastsea", document["cloth"].toString())
-//                    Log.i("eastsea", document["feedback"].toString())
-                    val id = document["id"]?.toString() ?: "1"
                     val date = document["date"]?.toString() ?: "20222022"
+                    val time = document["time"]?.toString() ?: "12:12"
                     val loc = document["loc"]?.toString() ?: "서울특별시 강남구"
-                    val temp = document["temp"]?.toString() ?: "99"
-                    val cloth = document["cloth"]?.toString() ?: "cloth1"
+                    val currentTemp = document["curTemp"]?.toString() ?: "99"
+                    val maxTemp = document["maxTemp"]?.toString() ?: "1"
+                    val minTemp = document["minTemp"]?.toString() ?: "1"
+                    val weatherIcon = document["weatherIcon"]?.toString() ?: ""
+                    val cloth = document["cloth"] as ArrayList<String>
+                    val feedbackScore = document["feedbackScore"]?.toString() ?: "1"
                     val feedback = document["feedback"]?.toString() ?: "test"
                     val item = WeatherFeedback(
-                        id.toInt(), date, loc, temp.toInt(), cloth, feedback
+                        date,
+                        time,
+                        loc,
+                        currentTemp.toInt(),
+                        maxTemp.toInt(),
+                        minTemp.toInt(),
+                        cloth,
+                        feedbackScore.toInt(),
+                        feedback,
+                        weatherIcon
                     )
-                    todayFeedbackList.add(item)
+                    if (date == dateFormat2.format(today)) {
+                        todayFeedbackList.add(item)
+                    }
+                    if (currentTemp.toInt() <= curTemp + 3 && currentTemp.toInt() >= curTemp - 3) {
+                        similarDayFeedbackList.add(item)
+                    }
                     adapter.notifyDataSetChanged()
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("eastsea", "Error getting documents.", exception)
+                Log.i("eastsea", "similiar list size : ${similarDayFeedbackList.size}")
+                Log.i("eastsea", "today list size : ${todayFeedbackList.size}")
+
             }
         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        val query = db.collection("WeatherFeedback").limit(10) //최근 50개만
-        val option =
-            FirestoreRecyclerOptions.Builder<WeatherFeedback>()
-                .setQuery(query, WeatherFeedback::class.java).build()
-//        adapter = MyFeedbackAdapter(option)
-        adapter = MyFeedbackAdapter(todayFeedbackList)
+        adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
         adapter.itemClickListener = object : MyFeedbackAdapter.OnItemClickListener {
             override fun OnItemClick(position: Int) {
                 binding.apply {
@@ -111,10 +146,42 @@ class CommuFragment : Fragment() {
                 }
             }
         }
-//        adapter.startListening()
-        binding!!.apply{
-            todayRecyclerView.layoutManager = layoutManager
-            todayRecyclerView.adapter = adapter
+        binding!!.apply {
+            comRecyclerview.layoutManager = layoutManager
+            comRecyclerview.adapter = adapter
+        }
+    }
+
+    private fun putResultToList(result: QuerySnapshot?, isSimilar: Boolean) {
+
+        for (document in result!!) {
+            val date = document["date"]?.toString() ?: "20222022"
+            val time = document["time"]?.toString() ?: "12:12"
+            val loc = document["loc"]?.toString() ?: "서울특별시 강남구"
+            val curTemp = document["curTemp"]?.toString() ?: "99"
+            val maxTemp = document["maxTemp"]?.toString() ?: "1"
+            val minTemp = document["minTemp"]?.toString() ?: "1"
+            val weatherIcon = document["weatherIcon"]?.toString() ?: ""
+            val cloth = document["cloth"] as ArrayList<String>
+            val feedbackScore = document["feedbackScore"]?.toString() ?: "1"
+            val feedback = document["feedback"]?.toString() ?: "test"
+            val item = WeatherFeedback(
+                date,
+                time,
+                loc,
+                curTemp.toInt(),
+                maxTemp.toInt(),
+                minTemp.toInt(),
+                cloth,
+                feedbackScore.toInt(),
+                feedback,
+                weatherIcon
+            )
+            if (isSimilar) {
+                similarDayFeedbackList.add(item)
+            } else {
+                todayFeedbackList.add(item)
+            }
         }
     }
 
@@ -128,7 +195,7 @@ class CommuFragment : Fragment() {
         val fragmentManager = childFragmentManager
         val newFragment = FullDiaglogFragment()
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container, newFragment)
-            ?.addToBackStack(null)
+//            ?.addToBackStack(null)
             ?.commitAllowingStateLoss()
     }
 

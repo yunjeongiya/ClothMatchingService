@@ -36,7 +36,9 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="오늘 입은 옷은" />
+                android:padding="10dp"
+                android:text="오늘 입은 옷은"
+                android:textSize="20sp" />
 
 
             <TableLayout
@@ -52,7 +54,8 @@
                         android:id="@+id/imageButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:src="@tools:sample/avatars" />
+                        android:layout_weight="1"
+                        tools:src="@drawable/common_google_signin_btn_icon_dark" />
 
                     <ImageButton
                         android:id="@+id/imageButton2"
@@ -66,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@android:drawable/btn_star_big_on" />
+                        android:src="@drawable/common_google_signin_btn_icon_dark" />
                 </TableRow>
 
                 <TableRow
@@ -82,6 +85,7 @@
             </TableLayout>
 
             <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -90,7 +94,9 @@
                     android:id="@+id/btn1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:checked="true" />
 
                 <RadioButton
                     android:id="@+id/btn2"
@@ -118,19 +124,76 @@
 
             </RadioGroup>
 
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="?android:attr/listDivider"
+                android:translationY="-25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="추웠어요" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="조금 추웠어요" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="적당했어요" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="조금 더웠어요" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="더웠어요" />
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/feedbacktext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="체감날씨를 공유해주세요!"
                 android:inputType="textPersonName" />
 
             <Button
                 android:id="@+id/submitbtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SUBMIT" />
+                android:text="공유하기" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
