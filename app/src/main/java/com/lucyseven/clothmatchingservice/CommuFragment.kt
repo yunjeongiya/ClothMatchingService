@@ -1,5 +1,6 @@
 package com.lucyseven.clothmatchingservice
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -32,12 +33,15 @@ class CommuFragment : Fragment() {
 
     var binding: FragmentCommuBinding? = null
     var todayFeedbackList = arrayListOf<WeatherFeedback>()
+    var todayLocalFeedbackList = arrayListOf<WeatherFeedback>()
     var similarDayFeedbackList = arrayListOf<WeatherFeedback>()
     var isSimilarDay = false
     var curTemp: Int = 0
+    var userLoc: String = ""
     val today = LocalDateTime.now()
     val dateFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
     val dateFormat2 = DateTimeFormatter.ofPattern("yyyyMMdd")
+    var showOnlyLocal: Boolean = true
     lateinit var adapter: MyFeedbackAdapter
     lateinit var db: FirebaseFirestore
     lateinit var layoutManager: LinearLayoutManager
@@ -46,6 +50,10 @@ class CommuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+        val pref =
+            requireContext().getSharedPreferences("commuSetting", Activity.MODE_PRIVATE)
+
+        showOnlyLocal = pref.getBoolean("localsetting", true) // 지역만 보여줄지 여부
 
         binding = FragmentCommuBinding.inflate(layoutInflater, container, false)
         //firebase setting
@@ -59,6 +67,7 @@ class CommuFragment : Fragment() {
         model.weatherDataLive.observe(viewLifecycleOwner) {
             //weather data init
             curTemp = it.temperature.currentTemp
+            userLoc = it.city
             //binding 처리
             if (todayFeedbackList.size + similarDayFeedbackList.size == 0)
                 getfbdb()
@@ -79,7 +88,12 @@ class CommuFragment : Fragment() {
                         false -> {
                             isTodayText.text = "오늘"
                             isSimilarDay = false
-                            adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
+                            if (showOnlyLocal) {
+                                adapter = MyFeedbackAdapter(todayLocalFeedbackList, isSimilarDay)
+                            } else {
+                                adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
+
+                            }
                             comRecyclerview.adapter = adapter
                         }
                     }
@@ -113,58 +127,68 @@ class CommuFragment : Fragment() {
         val collection = db.collection("WeatherFeedback")
         //data 일단 다 넣음
         Log.i("eastsea", "curtemp : $curTemp, today : ${dateFormat2.format(today)}")
-            collection.get().addOnSuccessListener { result ->
-                for (document in result!!) {
-                    val date = document["date"]?.toString() ?: "20222022"
-                    val time = document["time"]?.toString() ?: "12:12"
-                    val loc = document["loc"]?.toString() ?: "서울특별시 강남구"
-                    val currentTemp = document["curTemp"]?.toString() ?: "99"
-                    val maxTemp = document["maxTemp"]?.toString() ?: "1"
-                    val minTemp = document["minTemp"]?.toString() ?: "1"
-                    val weatherIcon = document["weatherIcon"]?.toString() ?: ""
-                    val cloth = document["cloth"] as ArrayList<String>
-                    val feedbackScore = document["feedbackScore"]?.toString() ?: "1"
-                    val feedback = document["feedback"]?.toString() ?: "test"
-                    val item = WeatherFeedback(
-                        date,
-                        time,
-                        loc,
-                        currentTemp.toInt(),
-                        maxTemp.toInt(),
-                        minTemp.toInt(),
-                        cloth,
-                        feedbackScore.toInt(),
-                        feedback,
-                        weatherIcon
-                    )
-                    if (date == dateFormat2.format(today)) {
-                        todayFeedbackList.add(item)
+        collection.get().addOnSuccessListener { result ->
+            for (document in result!!) {
+                val date = document["date"]?.toString() ?: "20222022"
+                val time = document["time"]?.toString() ?: "12:12"
+                val loc = document["loc"]?.toString() ?: "서울특별시 강남구"
+                val currentTemp = document["curTemp"]?.toString() ?: "99"
+                val maxTemp = document["maxTemp"]?.toString() ?: "1"
+                val minTemp = document["minTemp"]?.toString() ?: "1"
+                val weatherIcon = document["weatherIcon"]?.toString() ?: ""
+                val cloth = document["cloth"] as ArrayList<String>
+                val feedbackScore = document["feedbackScore"]?.toString() ?: "1"
+                val feedback = document["feedback"]?.toString() ?: "test"
+                val item = WeatherFeedback(
+                    date,
+                    time,
+                    loc,
+                    currentTemp.toInt(),
+                    maxTemp.toInt(),
+                    minTemp.toInt(),
+                    cloth,
+                    feedbackScore.toInt(),
+                    feedback,
+                    weatherIcon
+                )
+                Log.i(
+                    "eastsea",
+                    "today : ${dateFormat2.format(today)}, date from fb : ${date}, isEqual : ${
+                        date == dateFormat2.format(today)
+                    }"
+                )
+                if (date == dateFormat2.format(today)) {
+                    //today
+                    if (loc == userLoc) {
+                        //같은 지역인 것만 추가
+                        todayLocalFeedbackList.add(item)
                     }
-                    if (currentTemp.toInt() <= curTemp + 3 && currentTemp.toInt() >= curTemp - 3) {
-                        similarDayFeedbackList.add(item)
-                    }
-                    adapter.notifyDataSetChanged()
+                    todayFeedbackList.add(item)
+                    todayLocalFeedbackList.sortBy { it -> -it.time.replace(":", "").toInt() }
+                    todayFeedbackList.sortBy { it -> -it.time.replace(":", "").toInt() }
+                } else if (currentTemp.toInt() <= curTemp + 3 && currentTemp.toInt() >= curTemp - 3) {
+                    //similar day (not today)
+                    similarDayFeedbackList.add(item)
+                    similarDayFeedbackList.sortBy { it -> -it.date.toInt() }
                 }
-                Log.i("eastsea", "similiar list size : ${similarDayFeedbackList.size}")
-                Log.i("eastsea", "today list size : ${todayFeedbackList.size}")
-
+                adapter.notifyDataSetChanged()
             }
+            Log.i("eastsea", "similiar list size : ${similarDayFeedbackList.size}")
+            Log.i("eastsea", "today list size : ${todayFeedbackList.size}")
+            Log.i("eastsea", "today local list size : ${todayLocalFeedbackList.size}")
+        }
         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
-//        adapter.itemClickListener = object : MyFeedbackAdapter.OnItemClickListener {
-//            override fun OnItemClick(position: Int) {
-//                binding.apply {
-//                    pIdEdit.setText(adapter.getItem(position).pId.toString())
-//                    pNameEdit.setText(adapter.getItem(position).pName)
-//                    pQuantityEdit.setText(adapter.getItem(position).pQuantity.toString())
-//                }
-//            }
-//        }
+        if (showOnlyLocal) {
+            adapter = MyFeedbackAdapter(todayLocalFeedbackList, isSimilarDay)
+        } else {
+            adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
+        }
         binding!!.apply {
             comRecyclerview.layoutManager = layoutManager
             comRecyclerview.adapter = adapter
         }
     }
+
 
     private fun putResultToList(result: QuerySnapshot?, isSimilar: Boolean) {
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan"
     tools:context=".FullDiaglogFragment">
 
     <Button
@@ -25,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,39 +65,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
+                <View
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
                 <RadioButton
                     android:id="@+id/btn1"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:checked="true" />
-
+                    android:checked="true"
+                    android:gravity="center" />
+                <View
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3" />
                 <RadioButton
                     android:id="@+id/btn2"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
 
+                <View
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3" />
                 <RadioButton
                     android:id="@+id/btn3"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+                <View
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3" />
                 <RadioButton
                     android:id="@+id/btn4"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+                <View
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3" />
                 <RadioButton
                     android:id="@+id/btn5"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+                <View
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
-
             </RadioGroup>
 
             <View
@@ -104,7 +134,8 @@
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:background="?android:attr/listDivider"
-                android:translationY="-25dp" />
+                android:translationY="-25dp"
+                android:translationZ="-10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="조금 추웠어요" />
+                    android:text="조금추웠어요" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -143,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="조금 더웠어요" />
+                    android:text="조금더웠어요" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -157,16 +188,21 @@
             <EditText
                 android:id="@+id/feedbacktext"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="체감날씨를 공유해주세요!"
-                android:inputType="textPersonName" />
+                android:background = "@drawable/mtline_edit"
+                android:layout_margin="20dp"
+                android:padding="10dp"
+                android:inputType="textMultiLine" />
 
             <Button
                 android:id="@+id/submitbtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_marginTop="0dp"
                 android:text="공유하기" />
         </LinearLayout>
     </ScrollView>

@@ -47,9 +47,10 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
 //                    .into(weatherIcon);
                 Glide.with(weatherIconImg).load("${itemList[position].weatherIcon}")
                     .override(100, 100).into(weatherIconImg)
-                date.text = "${itemList[position].time}, ${itemList[position].curTemp}℃"
+                date.text = "${itemList[position].time}, ${itemList[position].curTemp}℃ (${itemList[position].loc})"
                 clothes.text = clothListToStr(itemList[position].cloth)
-                feedback.text = "\"${itemList[position].feedback}\""
+                feedback.text = "${makeFeedback(itemList[position].feedbackScore)}"
+                feedback2.text = "\"${itemList[position].feedback}\""
             }
         } else {
             holder.binding.apply {
@@ -68,10 +69,12 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
                     )
                 }월 ${itemList[position].date.substring(6, 8)}일"
                 date.text =
-                    "$dateMod, ${itemList[position].maxTemp}℃ ~ ${itemList[position].minTemp}℃ (${itemList[position].loc})"
+                    "$dateMod, ${itemList[position].minTemp}℃ ~ ${itemList[position].maxTemp}℃ (${itemList[position].loc})"
                 date.visibility = View.VISIBLE
                 clothes.text = clothListToStr(itemList[position].cloth)
-                feedback.text = "\"${itemList[position].feedback}\""
+                feedback.text = "${makeFeedback(itemList[position].feedbackScore)}"
+                feedback2.text = "\"${itemList[position].feedback}\""
+
             }
         }
 
@@ -89,6 +92,16 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
             return returnstr.substring(0, returnstr.length - 2)
         }else{
             return ""
+        }
+    }
+    fun makeFeedback(score:Int):String{
+        when(score){
+            1 -> return "추웠어요"
+            2 -> return "조금 추웠어요"
+            3 -> return "적당했어요"
+            4 -> return "조금 더웠어요"
+            5 -> return "더웠어요"
+            else -> return ""
         }
     }
 

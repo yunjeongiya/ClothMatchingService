@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="2dp"
-    android:id="@+id/settingFragment"
     tools:context=".SettingFragment">
 
     <LinearLayout
@@ -25,102 +25,114 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardElevation="2dp"
-                    android:layout_margin="8dp">
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="쇼핑몰 리스트"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:textStyle="bold"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/musinsa"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:gravity="center"
-                        android:text="쇼핑몰 리스트"
-                        android:padding="10dp"
-                        android:textAppearance="?attr/textAppearanceTitleLarge"
-                        android:textSize="20sp" />
+                        android:text="@string/musinsa" />
 
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:cardElevation="2dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    
-                    <LinearLayout
-                        android:orientation="vertical"
+                    <CheckBox
+                        android:id="@+id/brandy"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:text="@string/brandy" />
 
-                        <CheckBox
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:id="@+id/musinsa"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/musinsa"
-                            android:gravity="center" />
+                    <CheckBox
+                        android:id="@+id/styleShare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:text="@string/styleShare" />
 
-                        <CheckBox
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:id="@+id/brandy"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/brandy"
-                            android:gravity="center" />
+                    <CheckBox
+                        android:id="@+id/hiver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:text="@string/hiver" />
 
-                        <CheckBox
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:id="@+id/styleShare"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/styleShare"
-                            android:gravity="center" />
+                    <CheckBox
+                        android:id="@+id/twentyNineCM"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:text="@string/twentyNineCM" />
 
-                        <CheckBox
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:id="@+id/hiver"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/hiver"
-                            android:gravity="center" />
+                    <CheckBox
+                        android:id="@+id/naver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:text="@string/naver" />
 
-                        <CheckBox
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:id="@+id/twentyNineCM"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/twentyNineCM"
-                            android:gravity="center" />
-
-                        <CheckBox
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:id="@+id/naver"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/naver"
-                            android:gravity="center" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-
+                </LinearLayout>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="커뮤니티 설정"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:id="@+id/localsetting"
+                    android:text="근처 지역 정보만 보여주기" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </FrameLayout>
