@@ -84,6 +84,22 @@ class CommuFragment : Fragment() {
                         }
                     }
                 }
+                isTodayText.setOnClickListener {
+                    if (switchbtn.isChecked) {
+                        isTodayText.text = "오늘"
+                        isSimilarDay = false
+                        adapter = MyFeedbackAdapter(todayFeedbackList, isSimilarDay)
+                        comRecyclerview.adapter = adapter
+                        switchbtn.isChecked = false
+                    } else {
+                        isTodayText.text = "비슷했던 날"
+                        isSimilarDay = true
+                        adapter = MyFeedbackAdapter(similarDayFeedbackList, isSimilarDay)
+                        comRecyclerview.adapter = adapter
+                        switchbtn.isChecked = true
+                    }
+                }
+
                 fab.setOnClickListener {
                     showDialog()
                 }
