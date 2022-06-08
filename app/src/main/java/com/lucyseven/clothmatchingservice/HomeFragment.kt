@@ -1,6 +1,7 @@
 package com.lucyseven.clothmatchingservice
 
 import android.annotation.SuppressLint
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,6 +44,15 @@ class HomeFragment : Fragment() {
                 .load(weatherData.temperature.currentWeatherIconUrl)
                 .into(binding!!.todayWeatherUrl)
 
+            var max = -100
+            var min = 100
+            for (i in 0 until it.todayForecast.size) {
+                min = if (min > it.todayForecast[i].temp) it.todayForecast[i].temp else min
+                max = if (max < it.todayForecast[i].temp) it.todayForecast[i].temp else max
+            }
+            weatherData.temperature.minTemp = min
+            weatherData.temperature.maxTemp = max
+
             binding!!.currentLocation.text = weatherData.city
 
             binding!!.currentWeather.text = weatherData.temperature.currentWeather
@@ -51,10 +61,10 @@ class HomeFragment : Fragment() {
                 "${weatherData.temperature.currentTemp} ºC"
 
             binding!!.todayMinTemp.text =
-                "${weatherData.temperature.minTemp} ºC"
+                "$min ºC"
 
             binding!!.todayMaxTemp.text =
-                "${weatherData.temperature.maxTemp} ºC"
+                "$max ºC"
 
             forecastLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             forecastAdapter = HomeForecastAdapter(weatherData.todayForecast)

@@ -15,8 +15,8 @@ data class WeatherData(
 @Parcelize
 data class CurrentWeather(
     val currentTemp: Int, // 현재온도
-    val minTemp: Int, // 오늘 온도중 최저기온
-    val maxTemp: Int, // 오늘 온도중 최고기온
+    var minTemp: Int, // 오늘 온도중 최저기온
+    var maxTemp: Int, // 오늘 온도중 최고기온
     val currentWeather: String, // 오늘 날씨 -- 맑음, 흐림, 등등 한글로 저장
     val currentWeatherIconUrl: String // 오늘 날씨에 대한 아이콘 url
 ) : Parcelable

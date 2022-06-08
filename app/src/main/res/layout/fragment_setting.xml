@@ -5,6 +5,7 @@
     android:id="@+id/settingFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/sunset"
     android:elevation="2dp"
     tools:context=".SettingFragment">
 
@@ -118,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="커뮤니티 설정"
+                    android:padding="10dp"
                     android:textAppearance="?attr/textAppearanceTitleLarge"
                     android:textSize="20sp"
                     android:textStyle="bold" />
