@@ -47,7 +47,7 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
 //                    .into(weatherIcon);
                 Glide.with(weatherIconImg).load("${itemList[position].weatherIcon}")
                     .override(100, 100).into(weatherIconImg)
-                date.text = "${itemList[position].time}, ${itemList[position].curTemp}℃"
+                date.text = "${itemList[position].time}, ${itemList[position].curTemp}℃ (${itemList[position].loc})"
                 clothes.text = clothListToStr(itemList[position].cloth)
                 feedback.text = "${makeFeedback(itemList[position].feedbackScore)}"
                 feedback2.text = "\"${itemList[position].feedback}\""
@@ -69,7 +69,7 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
                     )
                 }월 ${itemList[position].date.substring(6, 8)}일"
                 date.text =
-                    "$dateMod, ${itemList[position].maxTemp}℃ ~ ${itemList[position].minTemp}℃ (${itemList[position].loc})"
+                    "$dateMod, ${itemList[position].minTemp}℃ ~ ${itemList[position].maxTemp}℃ (${itemList[position].loc})"
                 date.visibility = View.VISIBLE
                 clothes.text = clothListToStr(itemList[position].cloth)
                 feedback.text = "${makeFeedback(itemList[position].feedbackScore)}"

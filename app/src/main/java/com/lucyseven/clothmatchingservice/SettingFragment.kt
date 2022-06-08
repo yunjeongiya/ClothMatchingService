@@ -30,7 +30,6 @@ class SettingFragment : Fragment() {
             twentyNineCM.isChecked = pref.getBoolean("twentyNineCM", true)
             naver.isChecked = pref.getBoolean("naver", true)
 
-
             musinsa.setOnCheckedChangeListener { _, isChecked ->
                 prefEdit.putBoolean("musinsa", isChecked).apply()
             }
@@ -54,6 +53,14 @@ class SettingFragment : Fragment() {
             naver.setOnCheckedChangeListener { _, isChecked ->
                 prefEdit.putBoolean("naver", isChecked).apply()
             }
+            //for community setting
+            val pref2 = requireContext().getSharedPreferences("commuSetting", Activity.MODE_PRIVATE)
+            val prefEdit2 = pref2.edit()
+            localsetting.isChecked = pref2.getBoolean("localsetting", true)
+            localsetting.setOnCheckedChangeListener {_, isChecked ->
+                prefEdit2.putBoolean("localsetting", isChecked).apply()
+            }
+
         }
 
 

@@ -188,16 +188,21 @@
             <EditText
                 android:id="@+id/feedbacktext"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="체감날씨를 공유해주세요!"
-                android:inputType="textPersonName" />
+                android:background = "@drawable/mtline_edit"
+                android:layout_margin="20dp"
+                android:padding="10dp"
+                android:inputType="textMultiLine" />
 
             <Button
                 android:id="@+id/submitbtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_marginTop="0dp"
                 android:text="공유하기" />
         </LinearLayout>
     </ScrollView>
