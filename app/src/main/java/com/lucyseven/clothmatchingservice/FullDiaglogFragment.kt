@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import androidx.core.view.get
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -26,7 +25,7 @@ import java.util.*
 
 // https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog
 
-class FullDiaglogFragment : DialogFragment() {
+class FullDiaglogFragment : androidx.fragment.app.DialogFragment() {
     private var _binding: FragmentFullDiaglogBinding? = null
     private val binding get() = _binding!!
     val today = LocalDateTime.now()

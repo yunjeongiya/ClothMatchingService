@@ -49,7 +49,8 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
                     .override(100, 100).into(weatherIconImg)
                 date.text = "${itemList[position].time}, ${itemList[position].curTemp}℃"
                 clothes.text = clothListToStr(itemList[position].cloth)
-                feedback.text = "\"${itemList[position].feedback}\""
+                feedback.text = "${makeFeedback(itemList[position].feedbackScore)}"
+                feedback2.text = "\"${itemList[position].feedback}\""
             }
         } else {
             holder.binding.apply {
@@ -71,7 +72,9 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
                     "$dateMod, ${itemList[position].maxTemp}℃ ~ ${itemList[position].minTemp}℃ (${itemList[position].loc})"
                 date.visibility = View.VISIBLE
                 clothes.text = clothListToStr(itemList[position].cloth)
-                feedback.text = "\"${itemList[position].feedback}\""
+                feedback.text = "${makeFeedback(itemList[position].feedbackScore)}"
+                feedback2.text = "\"${itemList[position].feedback}\""
+
             }
         }
 
@@ -89,6 +92,16 @@ class MyFeedbackAdapter(val itemList: ArrayList<WeatherFeedback>, val isSimilarD
             return returnstr.substring(0, returnstr.length - 2)
         }else{
             return ""
+        }
+    }
+    fun makeFeedback(score:Int):String{
+        when(score){
+            1 -> return "추웠어요"
+            2 -> return "조금 추웠어요"
+            3 -> return "적당했어요"
+            4 -> return "조금 더웠어요"
+            5 -> return "더웠어요"
+            else -> return ""
         }
     }
 

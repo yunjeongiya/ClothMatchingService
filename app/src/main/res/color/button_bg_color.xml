@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!--When Button is not enabled -->
-    <item android:state_enabled="false" android:color="#fabcff" />
+    <item android:state_enabled="false" android:color="#808080">
+        <shape>
+            <solid android:color="#FFFFFF" />
+            <stroke android:width="2dp" android:color="#ffa0a496" />
+            <corners android:bottomLeftRadius="15dp" android:bottomRightRadius="15dp" android:topLeftRadius="15dp" android:topRightRadius="15dp" />
+        </shape>
+    </item>
     <!--When Button is in pressed state -->
-    <item android:state_pressed="true" android:color="#fabcff" />
+    <item android:state_pressed="true" android:color="#808080">
+        <shape>
+            <solid android:color="#FFFFFF" />
+            <stroke android:width="2dp" android:color="#ffa0a496" />
+            <corners android:bottomLeftRadius="15dp" android:bottomRightRadius="15dp" android:topLeftRadius="15dp" android:topRightRadius="15dp" />
+        </shape>
+    </item>
     <!--When Button is in selected state -->
-    <item android:state_selected="true" android:color="#fabcff" />
+    <item android:state_selected="true" android:color="#808080" >
+        <shape>
+            <solid android:color="#FFFFFF" />
+            <stroke android:width="2dp" android:color="#ffa0a496" />
+            <corners android:bottomLeftRadius="15dp" android:bottomRightRadius="15dp" android:topLeftRadius="15dp" android:topRightRadius="15dp" />
+        </shape>
+    </item>
     <!--Default Background Color -->
-    <item android:color="@android:color/white" />
+    <item android:color="@android:color/white" >
+        <shape>
+            <solid android:color="#FFFFFF" />
+            <stroke android:width="2dp" android:color="#ffa0a496" />
+            <corners android:bottomLeftRadius="15dp" android:bottomRightRadius="15dp" android:topLeftRadius="15dp" android:topRightRadius="15dp" />
+        </shape>
+    </item>
 
 </selector>
