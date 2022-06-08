@@ -47,8 +47,8 @@ class LinkFragment : Fragment() {
             val weatherData = it
             binding!!.apply {
                 recyclerView.layoutManager = LinearLayoutManager(linkActivity, LinearLayoutManager.VERTICAL, false)
-                TWhighest.text = "이번주 ${it.city}의 평균 최고 기온은"
-                TWlowest.text = "이번주 ${it.city}의 평균 최저 기온은"
+                TWhighest.text = "이번주 ${it.city}의\n 평균 최고 기온은"
+                TWlowest.text = "이번주 ${it.city}의\n 평균 최저 기온은"
                 HighestTemp.text = "${it.weekTemperature.maxTemp}"
                 LowestTemp.text = "${it.weekTemperature.minTemp}"
             }

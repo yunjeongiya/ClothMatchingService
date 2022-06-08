@@ -35,34 +35,43 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/TWhighest"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_marginTop="10dp"
                             android:text="이번주 평균 최고 기온은"
+                            android:textAlignment="center"
                             android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textSize="15sp" />
-                        <TextView
-                            android:id="@+id/HighestTemp"
-                            android:layout_width="wrap_content"
+                            android:textSize="20sp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="25"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="#FF0000"
-                            android:textSize="25sp" />
+                            android:orientation="horizontal"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/textView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="℃"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textSize="15sp" />
+                            <TextView
+                                android:id="@+id/HighestTemp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:text="25"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="#FF0000"
+                                android:textSize="25sp" />
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="℃"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
@@ -80,35 +89,43 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/TWlowest"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_marginTop="10dp"
                             android:text="이번주 평균 최저 기온은"
+                            android:textAlignment="center"
                             android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textSize="15sp" />
+                            android:textSize="20sp" />
 
-                        <TextView
-                            android:id="@+id/LowestTemp"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="25"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="#0000FF"
-                            android:textSize="25sp" />
+                            android:orientation="horizontal"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:text="℃"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textSize="15sp" />
+                            <TextView
+                                android:id="@+id/LowestTemp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:text="25"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="#0000FF"
+                                android:textSize="25sp" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="℃"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
@@ -145,10 +162,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="이번주에 자주 입으실 것 같은 옷은..."
+                        android:text="이번 주에는 이런 옷은 어떨까요?"
+                        android:textAlignment="center"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textSize="20sp" />
-
+                        android:textSize="18sp"
+                        android:layout_gravity="center" />
 
                 </com.google.android.material.card.MaterialCardView>
 
