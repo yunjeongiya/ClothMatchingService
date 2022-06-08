@@ -44,11 +44,9 @@ class LinkFragment : Fragment() {
         model.weatherDataLive.observe(viewLifecycleOwner) {
             // 상인 it 이 mainActivity 로부터 받은 weatherData 이므로
             // 이 박스 안에서 모든 데이털 처리를 하는게 편합니다. 여기서 weather data 관련된 내용을 처리하면 돼요!
-            val weatherData = it
             binding!!.apply {
                 recyclerView.layoutManager = LinearLayoutManager(linkActivity, LinearLayoutManager.VERTICAL, false)
-                TWhighest.text = "이번주 ${it.city}의\n 평균 최고 기온은"
-                TWlowest.text = "이번주 ${it.city}의\n 평균 최저 기온은"
+                cityTextView.text = "${it.city}"
                 HighestTemp.text = "${it.weekTemperature.maxTemp}"
                 LowestTemp.text = "${it.weekTemperature.minTemp}"
             }
@@ -57,7 +55,6 @@ class LinkFragment : Fragment() {
 
         model.clothDataLive.observe(viewLifecycleOwner) {
             // 상인 it이 현재 온도에 맞는 옷 리스트들이 들어있는 Cloth 데이터 리스트
-            val clothList = it
             binding!!.apply {
                 adapter = ClothAdapter(it, shopList)
                 recyclerView.adapter = adapter

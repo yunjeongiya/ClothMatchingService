@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,10 +51,10 @@ class HomeFragment : Fragment() {
                 "${weatherData.temperature.currentTemp} ºC"
 
             binding!!.todayMinTemp.text =
-                "최저 : ${weatherData.temperature.minTemp} ºC"
+                "${weatherData.temperature.minTemp} ºC"
 
             binding!!.todayMaxTemp.text =
-                "최고 : ${weatherData.temperature.maxTemp} ºC"
+                "${weatherData.temperature.maxTemp} ºC"
 
             forecastLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             forecastAdapter = HomeForecastAdapter(weatherData.todayForecast)
@@ -70,7 +69,7 @@ class HomeFragment : Fragment() {
                 weatherData.temperature.maxTemp
             )
 
-            clothListLayoutManager = GridLayoutManager(requireContext(), 4, GridLayoutManager.VERTICAL, false)
+            clothListLayoutManager = GridLayoutManager(requireContext(), 5, GridLayoutManager.VERTICAL, false)
             clothListAdapter = HomeClothAdapter(clothList)
 
             binding!!.apply {

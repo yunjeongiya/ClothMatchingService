@@ -37,7 +37,10 @@ class HomeForecastAdapter(private val itemList: ArrayList<TodayForecast>) :
 
             val time = itemList[position].time.toString()
             val splitTime = time.split('T')
-            forecastTime.text = splitTime[0] + '\n' + splitTime[1]
+
+            val date = splitTime[0].split('-')
+
+            forecastTime.text = date[1] + " / " + date[2] + '\n' + splitTime[1]
         }
     }
 

@@ -22,6 +22,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
+import com.google.api.AnnotationsProto.http
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.rpc.Help
 import com.lucyseven.clothmatchingservice.cloth.api.Cloth
@@ -31,7 +32,11 @@ import com.lucyseven.clothmatchingservice.weather.api.Location
 import com.lucyseven.clothmatchingservice.weather.api.WeatherData
 import com.lucyseven.clothmatchingservice.weather.impl.WeatherDataFetcherImpl
 import kotlinx.coroutines.*
+import org.json.JSONObject
+import org.jsoup.Jsoup
+import java.time.LocalDateTime
 import java.util.jar.Manifest
+import kotlin.math.*
 
 
 class MainActivity : AppCompatActivity() {

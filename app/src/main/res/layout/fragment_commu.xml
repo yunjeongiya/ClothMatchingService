@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/sunset"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
@@ -26,11 +27,13 @@
             android:orientation="horizontal">
 
                 <TextView
+                    android:textColor="@color/black"
                     android:id="@+id/dateText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
+                    android:textStyle="bold"
                     android:padding="10dp"
                     android:text="2022년 00월 00일"
                     android:textSize="20sp" />
@@ -94,5 +97,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:text="기록하기"
+        android:backgroundTint="#7CD9D1"
         app:icon="@drawable/ic_baseline_edit_24" />
 </FrameLayout>

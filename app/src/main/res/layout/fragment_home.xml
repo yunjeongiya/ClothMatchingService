@@ -2,262 +2,198 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/sunset"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="2dp"
-        android:orientation="vertical"
-        android:id="@+id/homeFragment"
-        tools:context=".HomeFragment">
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black">
+
+        <TextView
+            android:id="@+id/currentTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="현재 온도"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="300dp"
+            android:layout_marginStart="30dp"
+            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textSize="40sp" />
+
+        <ImageView
+            android:id="@+id/todayWeatherUrl"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toTopOf="@id/currentTemp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="50dp" />
+
+        <TextView
+            android:id="@+id/currentWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/todayWeatherUrl"
+            app:layout_constraintBottom_toBottomOf="@id/todayWeatherUrl"
+            android:textStyle="bold"
+            android:text="오늘의 날씨"
+            android:layout_marginStart="15dp"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/todayMaxTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/currentTemp"
+            app:layout_constraintBottom_toBottomOf="@id/currentTemp"
+            android:layout_marginStart="40dp"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="최고"
+            android:textColor="#FF0000" />
+
+        <TextView
+            app:layout_constraintStart_toEndOf="@id/todayMaxTemp"
+            app:layout_constraintBottom_toBottomOf="@id/todayMaxTemp"
+            app:layout_constraintTop_toTopOf="@id/todayMaxTemp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="/" />
+
+        <TextView
+            android:id="@+id/todayMinTemp"
+            app:layout_constraintStart_toEndOf="@id/todayMaxTemp"
+            app:layout_constraintBottom_toBottomOf="@id/todayMaxTemp"
+            app:layout_constraintTop_toTopOf="@id/todayMaxTemp"
+            android:layout_marginStart="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="20sp"
+            android:textColor="#0000FF"
+            android:textStyle="bold"
+            android:text="최저" />
+
+
+        <TextView
+            android:id="@+id/currentLocation"
+            app:layout_constraintTop_toBottomOf="@id/currentTemp"
+            app:layout_constraintStart_toStartOf="@id/currentTemp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="20sp"
+            android:text="현재위치" />
+
+        <TextView
+            android:id="@+id/todayForecastText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/currentLocation"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="40dp"
+            android:text="24시간 기상 예보"
+            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="13sp" />
 
         <com.google.android.material.card.MaterialCardView
+            app:layout_constraintBottom_toTopOf="@id/forecastRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="?attr/materialCardViewElevatedStyle"
-            app:cardElevation="2dp"
-            android:layout_margin="8dp">
+            android:layout_margin="1dp"
+            style="?attr/materialCardViewElevatedStyle">
 
-            <TextView
-                android:id="@+id/currentLocation"
-                android:text="현재위치"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:padding="10dp"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:background="#CBE9F2"
+                android:layout_height="3dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/forecastRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/todayForecastText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            app:layout_constraintTop_toBottomOf="@id/forecastRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            style="?attr/materialCardViewElevatedStyle">
+
+            <View
+                android:layout_width="match_parent"
+                android:background="#CBE9F2"
+                android:layout_height="3dp"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/todayClothRecommand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/forecastRecyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            android:text="오늘의 추천 옷"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="13sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            app:layout_constraintBottom_toTopOf="@id/clothListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            style="?attr/materialCardViewElevatedStyle">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="#CBE9F2" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/clothListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/todayClothRecommand"
+            android:layout_marginTop="10dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            app:layout_constraintTop_toBottomOf="@id/clothListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_margin="1dp"
+            android:layout_height="wrap_content"
+            style="?attr/materialCardViewElevatedStyle">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="#CBE9F2" />
 
         </com.google.android.material.card.MaterialCardView>
 
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            style="?attr/materialCardViewElevatedStyle"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:cardElevation="2dp">
-
-
-            <LinearLayout
-                android:weightSum="5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_weight="2"
-                    style="?attr/materialCardViewElevatedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:weightSum="8"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/todayWeatherUrl"
-                            android:contentDescription="currentWeatherImage"
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_weight="7"
-                            android:layout_height="0dp" />
-
-                        <com.google.android.material.card.MaterialCardView
-                            style="?attr/materialCardViewElevatedStyle"
-                            android:layout_width="match_parent"
-                            android:layout_weight="1"
-                            android:layout_height="0dp"
-                            android:layout_margin="8dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/currentWeather"
-                                android:textAppearance="?attr/textAppearanceTitleMedium"
-                                android:textSize="13sp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="현재 날씨"
-                                android:gravity="center" />
-
-
-                        </com.google.android.material.card.MaterialCardView>
-
-
-                    </LinearLayout>
-
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    style="?attr/materialCardViewElevatedStyle"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_margin="20dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/currentTemp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textStyle="bold"
-                            android:textSize="25sp"
-                            android:padding="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="--" />
-
-                        <TextView
-                            android:id="@+id/todayMinTemp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textSize="15sp"
-                            android:padding="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="최저 :  --" />
-
-                        <TextView
-                            android:id="@+id/todayMaxTemp"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textSize="15sp"
-                            android:padding="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="최고 :  --" />
-                    </LinearLayout>
-
-
-                </com.google.android.material.card.MaterialCardView>
-
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?attr/materialCardViewElevatedStyle"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardElevation="2dp"
-                    style="?attr/materialCardViewElevatedStyle"
-                    android:layout_margin="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:padding="5dp"
-                        android:text="24시간 기상 예보"
-                        android:textSize="20sp"
-                        android:gravity="center" />
-
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginBottom="8dp"
-                    style="?attr/materialCardViewElevatedStyle">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/forecastRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?attr/materialCardViewElevatedStyle"
-            app:cardElevation="2dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:cardElevation="2dp"
-                    style="?attr/materialCardViewElevatedStyle">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="오늘의 추천옷"
-                        android:textSize="20sp"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:padding="5dp"
-                        android:gravity="center" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:cardElevation="2dp"
-                    style="?attr/materialCardViewElevatedStyle">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/clothListRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
