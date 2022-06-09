@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ClothMatchingService</string>
+    <string name="app_name">WeatheryTime</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="musinsa">무신사 (https://www.musinsa.com/app/)</string>

@@ -94,7 +94,7 @@ class ClothDataImpl : ClothRecommender {
                 )
             else ->
                 arrayListOf(
-                    Cloth(R.drawable.shirt, "반팔티"),
+                    Cloth(R.drawable.tshirt, "반팔티"),
                     Cloth(R.drawable.sleeveless, "민소매"),
                     Cloth(R.drawable.onepiece, "원피스"),
                     Cloth(R.drawable.short_onepiece, "짧은 원피스"),
