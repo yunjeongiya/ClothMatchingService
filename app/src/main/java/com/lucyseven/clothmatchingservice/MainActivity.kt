@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -77,15 +78,14 @@ class MainActivity : AppCompatActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportActionBar?.hide()    //remove title bar
+        supportActionBar?.hide()//remove title bar
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment())
-            .commitAllowingStateLoss()
-
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, SplashFragment()).commitAllowingStateLoss()
         initShoppingMallSetting()
         initLocation()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initLayout()
     }
 
@@ -158,7 +158,8 @@ class MainActivity : AppCompatActivity() {
             }
             weatherData = job.await()
         }
-
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, HomeFragment()).commitAllowingStateLoss()
         return weatherData!!
     }
 

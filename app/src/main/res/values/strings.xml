@@ -8,4 +8,6 @@
     <string name="hiver">하이버 (https://www.hiver.co.kr/)</string>
     <string name="twentyNineCM">29cm (https://www.29cm.co.kr/home/)</string>
     <string name="naver">네이버 쇼핑 (https://shopping.naver.com/)</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
