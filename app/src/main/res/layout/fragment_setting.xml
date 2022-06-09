@@ -131,7 +131,7 @@
                     android:layout_marginEnd="10dp"
                     android:gravity="center"
                     android:id="@+id/localsetting"
-                    android:text="근처 지역 정보만 보여주기" />
+                    android:text="(오늘) 근처 지역 정보만 보여주기" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

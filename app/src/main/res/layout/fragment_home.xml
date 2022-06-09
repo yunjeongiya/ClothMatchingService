@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/sunset"
+    android:overScrollMode="never"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
 
@@ -177,6 +178,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/todayClothRecommand"
+            android:overScrollMode="never"
             android:layout_marginTop="10dp" />
 
         <com.google.android.material.card.MaterialCardView

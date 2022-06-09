@@ -15,67 +15,60 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="?attr/materialCardViewElevatedStyle"
-            app:cardElevation="2dp"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:textColor="@color/black"
                     android:id="@+id/dateText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:textStyle="bold"
                     android:padding="10dp"
                     android:text="2022년 00월 00일"
-                    android:textSize="20sp" />
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
 
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?attr/materialCardViewElevatedStyle"
-                    app:cardElevation="2dp"
-                    android:layout_margin="8dp">
-
-                    <LinearLayout
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                        <Switch
-                            android:id="@+id/switchbtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:paddingStart="20dp"
-                            android:paddingEnd="20dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:thumb="@drawable/switch_thumb"
-                            android:track="@drawable/switch_track_selector" />
+                    <Switch
+                        android:id="@+id/switchbtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingStart="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="10dp"
+                        android:thumb="@drawable/switch_thumb"
+                        android:track="@drawable/switch_track_selector" />
 
-                        <TextView
-                            android:id="@+id/isTodayText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="오늘" />
+                    <TextView
+                        android:id="@+id/isTodayText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="오늘"
+                        android:translationY="-5dp" />
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
@@ -85,8 +78,7 @@
             android:id="@+id/comRecyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            />
+            android:overScrollMode="never" />
 
     </LinearLayout>
 
@@ -96,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:backgroundTint="#B4E197"
         android:text="기록하기"
-        android:backgroundTint="#7CD9D1"
         app:icon="@drawable/ic_baseline_edit_24" />
 </FrameLayout>
