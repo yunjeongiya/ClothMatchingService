@@ -155,7 +155,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="25dp"
             android:textStyle="bold"
-            android:text="오늘의 추천 옷"
+            android:text="오늘의 추천 옷(낮)"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textSize="13sp" />
 
@@ -194,6 +194,56 @@
                 android:background="#CBE9F2" />
 
         </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/todayNightClothRecommand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/clothListRecyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            android:text="오늘의 추천 옷(밤)"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="13sp" />
+
+        <com.google.android.material.card.MaterialCardView
+            app:layout_constraintBottom_toTopOf="@id/clothListNightRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            style="?attr/materialCardViewElevatedStyle">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="#CBE9F2" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/clothListNightRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/todayNightClothRecommand"
+            android:overScrollMode="never"
+            android:layout_marginTop="10dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            app:layout_constraintTop_toBottomOf="@id/clothListNightRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_margin="1dp"
+            android:layout_height="wrap_content"
+            style="?attr/materialCardViewElevatedStyle">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="#CBE9F2" />
+
+        </com.google.android.material.card.MaterialCardView>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

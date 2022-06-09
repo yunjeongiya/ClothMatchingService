@@ -21,8 +21,12 @@ class HomeFragment : Fragment() {
     private var binding: FragmentHomeBinding? = null
     private lateinit var forecastAdapter: HomeForecastAdapter
     private lateinit var forecastLayoutManager: RecyclerView.LayoutManager
+
     private lateinit var clothListAdapter: HomeClothAdapter
     private lateinit var clothListLayoutManager: RecyclerView.LayoutManager
+
+    private lateinit var clothNightListAdapter: HomeClothAdapter
+    private lateinit var clothNightListLayoutManager: RecyclerView.LayoutManager
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -78,13 +82,22 @@ class HomeFragment : Fragment() {
                 weatherData.temperature.minTemp,
                 weatherData.temperature.maxTemp
             )
-
             clothListLayoutManager = GridLayoutManager(requireContext(), 5, GridLayoutManager.VERTICAL, false)
             clothListAdapter = HomeClothAdapter(clothList)
-
             binding!!.apply {
                 clothListRecyclerView.layoutManager = clothListLayoutManager
                 clothListRecyclerView.adapter = clothListAdapter
+            }
+
+            val nightClothList = ClothDataImpl().recommend(
+                weatherData.temperature.maxTemp,
+                weatherData.temperature.minTemp
+            )
+            clothNightListLayoutManager = GridLayoutManager(requireContext(), 5, GridLayoutManager.VERTICAL, false)
+            clothNightListAdapter = HomeClothAdapter(nightClothList)
+            binding!!.apply {
+                clothListNightRecyclerView.layoutManager = clothNightListLayoutManager
+                clothListNightRecyclerView.adapter = clothNightListAdapter
             }
 
 
