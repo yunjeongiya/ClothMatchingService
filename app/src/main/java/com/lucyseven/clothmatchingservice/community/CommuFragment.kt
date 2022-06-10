@@ -18,6 +18,7 @@ import com.lucyseven.clothmatchingservice.R
 import com.lucyseven.clothmatchingservice.databinding.FragmentCommuBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.math.max
 
 class CommuFragment : Fragment() {
 
@@ -27,6 +28,8 @@ class CommuFragment : Fragment() {
     var similarDayFeedbackList = arrayListOf<WeatherFeedback>()
     var isSimilarDay = false
     var curTemp: Int = 0
+    var minTemp_today: Int = 0
+    var maxTemp_today: Int = 0
     var userLoc: String = ""
     val today = LocalDateTime.now()
     val dateFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
@@ -57,6 +60,8 @@ class CommuFragment : Fragment() {
         model.weatherDataLive.observe(viewLifecycleOwner) {
             //weather data init
             curTemp = it.temperature.currentTemp
+            maxTemp_today = it.temperature.maxTemp
+            minTemp_today = it.temperature.minTemp
             userLoc = it.city
             //binding 처리
             if (todayFeedbackList.size + similarDayFeedbackList.size == 0)
@@ -156,7 +161,7 @@ class CommuFragment : Fragment() {
                     todayFeedbackList.add(item)
                     todayLocalFeedbackList.sortBy { it -> -it.time.replace(":", "").toInt() }
                     todayFeedbackList.sortBy { it -> -it.time.replace(":", "").toInt() }
-                } else if (currentTemp.toInt() <= curTemp + 3 && currentTemp.toInt() >= curTemp - 3) {
+                } else if (maxTemp.toInt() <= maxTemp_today + 3 && maxTemp.toInt() >= maxTemp_today - 3 && minTemp.toInt() <= minTemp_today + 3 && minTemp.toInt() >= minTemp_today - 3) {
                     //similar day (not today)
                     similarDayFeedbackList.add(item)
                     similarDayFeedbackList.sortBy { it -> -it.date.toInt() }
