@@ -1,7 +1,6 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.shoplink
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,12 +22,12 @@ class ClothAdapter(val clothing:List<Cloth>, val shopBase: ArrayList<ShopInfo>) 
         context = recyclerView.context
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = LinkrowBinding.inflate(LayoutInflater.from(parent.context))
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ClothAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val shopList: ArrayList<String> = ArrayList()
         val linkList: ArrayList<String> = ArrayList()
         val imageList: ArrayList<Int> = ArrayList()

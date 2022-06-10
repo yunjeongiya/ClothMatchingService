@@ -1,4 +1,4 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.shoplink
 
 import android.content.Context
 import android.content.Intent

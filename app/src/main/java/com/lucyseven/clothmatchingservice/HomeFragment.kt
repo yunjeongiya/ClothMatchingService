@@ -1,7 +1,6 @@
 package com.lucyseven.clothmatchingservice
 
 import android.annotation.SuppressLint
-import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lucyseven.clothmatchingservice.cloth.impl.ClothDataImpl
 import com.lucyseven.clothmatchingservice.databinding.FragmentHomeBinding
+import com.lucyseven.clothmatchingservice.weather.impl.DataViewModel
+import com.lucyseven.clothmatchingservice.weather.impl.HomeForecastAdapter
 
 
 class HomeFragment : Fragment() {

@@ -1,27 +1,22 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.community
 
 import android.app.Dialog
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
-import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.type.Date
+import com.lucyseven.clothmatchingservice.weather.impl.DataViewModel
+import com.lucyseven.clothmatchingservice.MainActivity
+import com.lucyseven.clothmatchingservice.R
 import com.lucyseven.clothmatchingservice.databinding.FragmentFullDiaglogBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 // https://developer.android.com/guide/topics/ui/dialogs.html#FullscreenDialog
 

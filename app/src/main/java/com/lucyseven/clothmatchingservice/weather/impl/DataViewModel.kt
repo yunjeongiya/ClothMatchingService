@@ -1,4 +1,4 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.weather.impl
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

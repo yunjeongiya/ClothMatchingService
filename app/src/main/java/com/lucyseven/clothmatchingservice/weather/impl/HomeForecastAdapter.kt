@@ -1,4 +1,4 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.weather.impl
 
 import android.annotation.SuppressLint
 import android.content.Context

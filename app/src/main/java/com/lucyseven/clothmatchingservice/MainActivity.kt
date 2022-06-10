@@ -3,41 +3,30 @@ package com.lucyseven.clothmatchingservice
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
-import com.google.api.AnnotationsProto.http
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.rpc.Help
 import com.lucyseven.clothmatchingservice.cloth.api.Cloth
 import com.lucyseven.clothmatchingservice.cloth.impl.ClothDataImpl
+import com.lucyseven.clothmatchingservice.community.CommuFragment
 import com.lucyseven.clothmatchingservice.databinding.ActivityMainBinding
+import com.lucyseven.clothmatchingservice.shoplink.LinkFragment
 import com.lucyseven.clothmatchingservice.weather.api.Location
 import com.lucyseven.clothmatchingservice.weather.api.WeatherData
+import com.lucyseven.clothmatchingservice.weather.impl.DataViewModel
 import com.lucyseven.clothmatchingservice.weather.impl.WeatherDataFetcherImpl
 import kotlinx.coroutines.*
-import org.json.JSONObject
-import org.jsoup.Jsoup
-import java.time.LocalDateTime
-import java.util.jar.Manifest
-import kotlin.math.*
 
 
 class MainActivity : AppCompatActivity() {

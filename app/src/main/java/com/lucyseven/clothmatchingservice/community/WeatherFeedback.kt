@@ -1,4 +1,4 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.community
 
 data class WeatherFeedback(
     var date: String,

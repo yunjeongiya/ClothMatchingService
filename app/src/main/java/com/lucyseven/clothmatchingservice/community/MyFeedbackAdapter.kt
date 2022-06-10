@@ -1,16 +1,10 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.community
 
-import android.opengl.Visibility
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.lucyseven.clothmatchingservice.databinding.RowBinding
 
 //firestore ui 사용하기 위한 adapter

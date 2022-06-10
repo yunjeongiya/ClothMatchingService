@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/drawable/switch_track_selector.xml" value="0.276" />
+        <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/drawable/table_layout_style.xml" value="0.276" />
         <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/layout/activity_main.xml" value="0.22083333333333333" />
         <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/layout/fragment_commu.xml" value="0.375" />
-        <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/layout/fragment_home.xml" value="0.22083333333333333" />
+        <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/layout/fragment_home.xml" value="0.335" />
         <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/layout/fragment_link.xml" value="0.22083333333333333" />
         <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/layout/fragment_setting.xml" value="0.22083333333333333" />
         <entry key="..\:/MobileProgramming/ClothMatchingService/app/src/main/res/layout/row.xml" value="0.375" />

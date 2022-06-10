@@ -1,4 +1,4 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.community
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,27 +7,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
-import androidx.loader.app.LoaderManager
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.lucyseven.clothmatchingservice.weather.impl.DataViewModel
+import com.lucyseven.clothmatchingservice.R
 import com.lucyseven.clothmatchingservice.databinding.FragmentCommuBinding
-import com.lucyseven.clothmatchingservice.weather.api.WeatherData
-import kotlinx.coroutines.*
-import java.text.DateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.math.round
 
 class CommuFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.lucyseven.clothmatchingservice
+package com.lucyseven.clothmatchingservice.shoplink
 
 import android.app.Activity
 import android.content.Context
@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lucyseven.clothmatchingservice.weather.impl.DataViewModel
+import com.lucyseven.clothmatchingservice.MainActivity
+import com.lucyseven.clothmatchingservice.R
 import com.lucyseven.clothmatchingservice.databinding.FragmentLinkBinding
 
 class LinkFragment : Fragment() {
@@ -38,12 +41,10 @@ class LinkFragment : Fragment() {
         shopList[4].pref = pref.getBoolean("twentyNineCM", true)
         shopList[5].pref = pref.getBoolean("naver", true)
 
-//      상인
-//      --------------- 요기 안에서 구현하시면 편할겁니다 -------------------------------------------------------
         val model = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
         model.weatherDataLive.observe(viewLifecycleOwner) {
-            // 상인 it 이 mainActivity 로부터 받은 weatherData 이므로
-            // 이 박스 안에서 모든 데이털 처리를 하는게 편합니다. 여기서 weather data 관련된 내용을 처리하면 돼요!
+            // it 이 mainActivity 로부터 받은 weatherData 이므로
+            // 이 박스 안에서 모든 데이터 처리를 하는게 편합니다. 여기서 weather data 관련된 내용을 처리하면 돼요!
             binding!!.apply {
                 recyclerView.layoutManager = LinearLayoutManager(linkActivity, LinearLayoutManager.VERTICAL, false)
                 cityTextView.text = "${it.city}"
@@ -54,13 +55,12 @@ class LinkFragment : Fragment() {
         }
 
         model.clothDataLive.observe(viewLifecycleOwner) {
-            // 상인 it이 현재 온도에 맞는 옷 리스트들이 들어있는 Cloth 데이터 리스트
+            // it이 현재 온도에 맞는 옷 리스트들이 들어있는 Cloth 데이터 리스트
             binding!!.apply {
                 adapter = ClothAdapter(it, shopList)
                 recyclerView.adapter = adapter
             }
         }
-//      --------------------------------------------------------------------------------------------------
 
         // Inflate the layout for this fragment
         binding = FragmentLinkBinding.inflate(layoutInflater, container, false)
