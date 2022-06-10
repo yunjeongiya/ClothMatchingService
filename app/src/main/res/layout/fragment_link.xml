@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
-    tools:context=".shoplink.LinkFragment">
+    tools:context=".shoplink.LinkFragment"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@drawable/sunset"
@@ -134,6 +135,9 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+</androidx.core.widget.NestedScrollView>
+
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->
@@ -256,4 +260,3 @@
 <!--        </com.google.android.material.card.MaterialCardView>-->
 
 <!--    </LinearLayout>-->
-</androidx.core.widget.NestedScrollView>
