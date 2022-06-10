@@ -50,6 +50,10 @@ class LinkFragment : Fragment() {
                 cityTextView.text = "${it.city}"
                 HighestTemp.text = "${it.weekTemperature.maxTemp}"
                 LowestTemp.text = "${it.weekTemperature.minTemp}"
+                if(shopList.all { !it.pref })
+                {
+                    recommandListTextView.text = "(옵션에서 쇼핑몰 리스트를 체크해보세요!)"
+                }
             }
 
         }

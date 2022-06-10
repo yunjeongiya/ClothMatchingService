@@ -32,12 +32,13 @@ class ClothAdapter(val clothing:List<Cloth>, val shopBase: ArrayList<ShopInfo>) 
         val linkList: ArrayList<String> = ArrayList()
         val imageList: ArrayList<Int> = ArrayList()
 
+        holder.binding.clothImage.setImageResource(clothing[position].iconId)
+        holder.binding.clothText.text = clothing[position].name
+
         for(i in 0 until shopBase.count())
         {
             if(shopBase[i].pref)
             {
-                holder.binding.clothImage.setImageResource(clothing[position].iconId)
-                holder.binding.clothText.text = clothing[position].name
                 holder.binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 imageList.add(shopBase[i].iconId)
                 shopList.add(shopBase[i].name + "에서\n" + clothing[position].name + " 확인해보기 >")

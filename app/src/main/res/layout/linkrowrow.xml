@@ -8,7 +8,7 @@
         android:id="@+id/mallImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginStart="40dp"
         app:layout_constraintEnd_toStartOf="@id/toWebsiteCard"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,14 +29,14 @@
 
         <TextView
             android:id="@+id/toWebsite"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#7CD9D1"
             android:paddingStart="50dp"
             android:paddingEnd="50dp"
-            android:text="A회사 확인해보기"
+            android:text="무신사에서\n짧은 원피스 확인해보기 >"
             android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
     </androidx.cardview.widget.CardView>
 
