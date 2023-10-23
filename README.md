@@ -1,20 +1,17 @@
 # ClothMatchingService
 
-LinkPage 변경사항 _ 0607,01:24
---> 기존에 만들어둔 link와 main branch를 병합 (Merge가 아니라 수동으로 넣었기에 merge request 등은 없었을 겁니다!)
+presentation video: https://youtu.be/3gcOJ7Adowg?si=jUTDV0z1WgElgaPP
 
-1) layout 폴더
-	0. link쪽을 위한 fragment fragment_link변경, (linkrow, linkrowrow) 추가
-	1. fragment_link : '이번달' -> '이번주' 로 변경
-	2. fragment_link : NestedScrollView를 이용, 전체가 다 scroll하도록 변경
+-	provide current weather information
+-	recommend day and night clothing
+-	is a community about real feel weather and proper clothing
+-	connect to the shopping mall page for weekly recommended fashion items
 
------------
-
-2) java 폴더
-	0. link를 위한 clothadapter, clothshopadaper 추가, linkfragment 변경
-	1. ShopInfo - 데이터 클래스를 위한 kotlin class - 추가
-
-----------
-
-3) drawable 폴더
-	1. R.drawable에 각 회사 icon 추가
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/a7c6f0a4-2c44-4645-bafc-c500090df95e)
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/eebf6866-8dba-4da6-a5c7-c3fc50e722b8)
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/034805c0-acda-4258-9153-fc56ccb8acfc)
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/fae394c6-acd8-4e3a-9105-f981b009aa7c)
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/a174eabe-bc10-4f48-be48-90bf53aa762e)
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/acf7fb2d-981d-42c6-98d5-a37aa0dbf7ee)
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/16eef2be-992d-49d4-ae51-5683c63ff575)
+![image](https://github.com/yunjeongiya/ClothMatchingService/assets/70215620/2d92961c-f15c-4931-aaee-8c189c5a2453)
